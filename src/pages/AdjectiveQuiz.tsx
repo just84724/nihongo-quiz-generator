@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,18 +73,22 @@ const naAdjectiveData = [
 // 變化形式
 const iAdjectiveForms = [
   { name: "否定法", pattern: "くない", example: "おおきくない" },
+  { name: "否定形（過去）", pattern: "くなかった", example: "おおきくなかった" },
   { name: "副詞法", pattern: "く", example: "おおきく" },
   { name: "中止法", pattern: "くて", example: "おおきくて" },
   { name: "過去法", pattern: "かった", example: "おおきかった" },
-  { name: "仮定形", pattern: "ければ", example: "おおきければ" }
+  { name: "仮定形", pattern: "ければ", example: "おおきければ" },
+  { name: "推量法", pattern: "かろう", example: "おおきかろう" }
 ];
 
 const naAdjectiveForms = [
   { name: "否定法", pattern: "でない", example: "ゆうめいでない" },
+  { name: "否定形（過去）", pattern: "でなかった", example: "ゆうめいでなかった" },
   { name: "副詞法", pattern: "に", example: "ゆうめいに" },
   { name: "中止法", pattern: "で", example: "ゆうめいで" },
   { name: "過去法", pattern: "だった", example: "ゆうめいだった" },
-  { name: "仮定形", pattern: "なら(ば)", example: "ゆうめいなら" }
+  { name: "仮定形", pattern: "なら(ば)", example: "ゆうめいなら" },
+  { name: "推量法", pattern: "だろう", example: "ゆうめいだろう" }
 ];
 
 type Question = {
@@ -129,14 +132,22 @@ const AdjectiveQuiz: React.FC = () => {
         const baseWord = adj.word.split('／')[0];
         let correctAnswer = "";
         
-        if (baseWord === "いい" && randomForm.name !== "否定法") {
+        if (baseWord === "いい" && randomForm.name !== "否定法" && randomForm.name !== "否定形（過去）") {
           const yoiBase = "よ";
           switch (randomForm.name) {
             case "副詞法": correctAnswer = "よく"; break;
             case "中止法": correctAnswer = "よくて"; break;
             case "過去法": correctAnswer = "よかった"; break;
             case "仮定形": correctAnswer = "よければ"; break;
+            case "推量法": correctAnswer = "よかろう"; break;
             default: correctAnswer = yoiBase + randomForm.pattern;
+          }
+        } else if (baseWord === "いい" && (randomForm.name === "否定法" || randomForm.name === "否定形（過去）")) {
+          // いい的否定形特殊處理
+          if (randomForm.name === "否定法") {
+            correctAnswer = "よくない";
+          } else if (randomForm.name === "否定形（過去）") {
+            correctAnswer = "よくなかった";
           }
         } else {
           const stem = baseWord.slice(0, -1);
@@ -163,10 +174,12 @@ const AdjectiveQuiz: React.FC = () => {
 
         switch (randomForm.name) {
           case "否定法": correctAnswer = baseWord + "でない"; break;
+          case "否定形（過去）": correctAnswer = baseWord + "でなかった"; break;
           case "副詞法": correctAnswer = baseWord + "に"; break;
           case "中止法": correctAnswer = baseWord + "で"; break;
           case "過去法": correctAnswer = baseWord + "だった"; break;
           case "仮定形": correctAnswer = baseWord + "なら"; break;
+          case "推量法": correctAnswer = baseWord + "だろう"; break;
           default: correctAnswer = baseWord + randomForm.pattern;
         }
 
