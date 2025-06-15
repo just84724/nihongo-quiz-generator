@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Edit3, MessageSquare, FileText, Users, Zap } from "lucide-react";
+import { BookOpen, Edit3, MessageSquare, FileText, Users, Zap, Languages } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -16,6 +16,7 @@ const Index: React.FC = () => {
   const handleAdjectiveQuiz = () => navigate("/adjective-quiz");
   const handleGivingReceivingQuiz = () => navigate("/giving-receiving-quiz");
   const handleAuxiliaryVerbQuiz = () => navigate("/auxiliary-verb-quiz");
+  const handleTranslationQuiz = () => navigate("/translation-quiz");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
@@ -85,6 +86,16 @@ const Index: React.FC = () => {
             <Zap className="mr-3 h-6 w-6" />
             {t('auxiliaryVerbPractice')}
           </Button>
+
+          <Button 
+            onClick={handleTranslationQuiz} 
+            variant="secondary" 
+            size="lg" 
+            className="w-full h-16 text-lg"
+          >
+            <Languages className="mr-3 h-6 w-6" />
+            {t('translationPractice')}
+          </Button>
         </div>
       </div>
       
@@ -94,6 +105,7 @@ const Index: React.FC = () => {
         <p className="mt-2">{t('adjectiveExplanation')}</p>
         <p className="mt-2">{t('givingReceivingExplanation')}</p>
         <p className="mt-2">{t('auxiliaryVerbExplanation')}</p>
+        <p className="mt-2">{t('translationExplanation')}</p>
       </div>
     </div>
   );

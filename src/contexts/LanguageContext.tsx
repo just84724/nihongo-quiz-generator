@@ -22,6 +22,7 @@ const translations = {
     adjectivePractice: "形容詞變化練習",
     givingReceivingPractice: "授受動詞文法練習",
     auxiliaryVerbPractice: "補助動詞練習",
+    translationPractice: "中文翻譯日文練習",
     
     // 描述文字
     practiceDescription: "練習日文助詞的使用方法",
@@ -29,6 +30,11 @@ const translations = {
     adjectiveExplanation: "形容詞變化練習可以學習い形容詞和な形容詞的各種變化形式",
     givingReceivingExplanation: "授受動詞練習包含くれる、あげる、もらう的用法練習",
     auxiliaryVerbExplanation: "補助動詞練習包含てしまう、ておく、てみる、てくる、ていく的用法練習",
+    translationExplanation: "中文翻譯日文練習可以練習將中文句子翻譯成日文",
+    
+    // 翻譯練習專用
+    translateToJapanese: "請將以下中文翻譯成日文",
+    enterJapaneseTranslation: "請輸入日文翻譯",
     
     // 通用按鈕
     back: "返回",
@@ -127,6 +133,7 @@ const translations = {
     adjectivePractice: "Adjective Conjugation Practice",
     givingReceivingPractice: "Giving & Receiving Verbs Practice",
     auxiliaryVerbPractice: "Auxiliary Verb Practice",
+    translationPractice: "Chinese to Japanese Translation Practice",
     
     // 描述文字
     practiceDescription: "Practice using Japanese particles correctly",
@@ -134,6 +141,11 @@ const translations = {
     adjectiveExplanation: "Adjective conjugation practice helps you learn various forms of i-adjectives and na-adjectives",
     givingReceivingExplanation: "Practice the usage of giving and receiving verbs: kureru, ageru, morau",
     auxiliaryVerbExplanation: "Practice auxiliary verbs: te shimau, te oku, te miru, te kuru, te iku",
+    translationExplanation: "Chinese to Japanese translation practice helps you translate Chinese sentences into Japanese",
+    
+    // 翻譯練習專用
+    translateToJapanese: "Please translate the following Chinese into Japanese",
+    enterJapaneseTranslation: "Enter Japanese translation",
     
     // 通用按鈕
     back: "Back",
