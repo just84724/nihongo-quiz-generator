@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plane, Home, ShoppingBag, Camera, Coffee, Globe } from "lucide-react";
@@ -24,6 +23,7 @@ type ScenarioQuestion = {
   titleKey: string;
   icon: React.ComponentType<{ className?: string }>;
   dialogue: string[];
+  dialogueEn?: string[];
   answer: string[];
 };
 
@@ -45,6 +45,19 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "A：12點了。",
       "B：差不多該check in了。",
       "A：嗯。走吧。"
+    ],
+    dialogueEn: [
+      "A: Sorry.",
+      "B: You're late.",
+      "A: Yeah, there was some traffic.",
+      "B: Oh no, I lost my passport.",
+      "A: Isn't it in your bag?",
+      "B: No, I just took it out to look at it.",
+      "A: Oh, I see it, it's under the chair.",
+      "B: Ah, here it is. What time is it now?",
+      "A: It's 12 o'clock.",
+      "B: It's almost time to check in.",
+      "A: Yeah. Let's go."
     ],
     answer: [
       "A： 對不起。",
@@ -90,6 +103,21 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "B：好，到時見。",
       "（廣播里播報：飛機即將降落，請乘客做好準備。今天時間是7月15號，星期五，室外溫度35攝氏度。祝旅途愉快。）"
     ],
+    dialogueEn: [
+      "A: Wake up, chat with me.",
+      "B: Ugh, I'm a bit sleepy.",
+      "A: What did you do last night?",
+      "B: I was playing computer games all night. Too excited, couldn't sleep.",
+      "A: Let's plan our vacation.",
+      "B: Sure.",
+      "A: Today is Friday, do you have time this Sunday?",
+      "B: Sunday? No, I don't.",
+      "A: How about next Wednesday?",
+      "B: Wednesday is fine.",
+      "A: Okay, let's meet at 10 AM Wednesday at McDonald's entrance.",
+      "B: Alright, see you then.",
+      "(Announcement: The plane is about to land, please prepare. Today is July 15th, Friday, outdoor temperature is 35°C. Have a pleasant journey.)"
+    ],
     answer: [
       "A：起來啦，陪我說說話把。",
       "起（お）きなさい。私となんか話（はなし）をしましょうよ・。。",
@@ -133,6 +161,18 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "B：不了，我們在外面吃呢。",
       "A：好，玩的開心點。",
       "B：拜拜。"
+    ],
+    dialogueEn: [
+      "A: Good morning! You're up early!",
+      "B: Yeah, I'm going shopping with friends today.",
+      "A: It might rain today, remember to bring an umbrella.",
+      "B: Okay, got it.",
+      "A: What time will you be back tonight?",
+      "B: Around 7 PM.",
+      "A: Will you come back for dinner?",
+      "B: No, we'll eat out.",
+      "A: Okay, have fun.",
+      "B: Bye."
     ],
     answer: [
       "A：早上好！你起得可真早！",
@@ -179,6 +219,25 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "A：接下來去哪呢？",
       "B：去看電影吧。",
       "A：好啊。"
+    ],
+    dialogueEn: [
+      "A: Good morning!",
+      "B: Good morning!",
+      "A: The second floor sells bags, let's go take a look.",
+      "B: Sure!",
+      "A: Look at this bag, it's so cute.",
+      "B: Yeah, really! How much is it?",
+      "A: 2100 yen.",
+      "B: Wow, a bit expensive.",
+      "A: That one's not bad either.",
+      "B: Yeah, let's go look.",
+      "A: Wow, this one's even more expensive.",
+      "B: I think this one's pretty good.",
+      "A: It's beautiful and cheap, let's buy this one.",
+      "B: Okay, good.",
+      "A: Where should we go next?",
+      "B: Let's go watch a movie.",
+      "A: Sure."
     ],
     answer: [
       "A：早上好！",
@@ -233,6 +292,18 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "A：嗯，抹茶冰欺淩很好吃，我也最喜歡。",
       "B：走吧。"
     ],
+    dialogueEn: [
+      "A: What a boring movie.",
+      "B: Yeah, I almost fell asleep.",
+      "A: I'm a bit hungry, let's go eat dinner before going home.",
+      "B: Sure, what do you want to eat?",
+      "A: How about sushi?",
+      "B: No, we just had it yesterday. How about steak?",
+      "A: Sure.",
+      "B: For dessert, I want matcha ice cream.",
+      "A: Yeah, matcha ice cream is delicious, it's my favorite too.",
+      "B: Let's go."
+    ],
     answer: [
       "A：好無聊的電影啊。",
       "つまらない映畫だったね・・",
@@ -271,6 +342,17 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "A：枯燥的日子又要開始了。",
       "B：哎，是啊，真是期待下一個假期啊。"
     ],
+    dialogueEn: [
+      "A: The vacation went by so fast.",
+      "B: Yeah, but it was also very enjoyable.",
+      "A: Where did you go during this vacation?",
+      "B: I traveled to Beijing. It was so hot. Then I just stayed home watching TV and surfing the internet. How about you?",
+      "A: I didn't go anywhere. Usually just stayed home alone. Occasionally went to the park with my parents on weekends.",
+      "B: That sounds nice too.",
+      "(Announcement: Passengers on flight AC087, the plane is about to take off, please go to gate 17 to prepare for boarding.)",
+      "A: The boring days are about to start again.",
+      "B: Sigh, yeah, really looking forward to the next vacation."
+    ],
     answer: [
       "A：假期過得好快啊。",
       "夏休みって過（す）ごすのは早いだね・・・",
@@ -295,7 +377,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
 
 const ScenarioQuiz: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [randomizedQuestions, setRandomizedQuestions] = useState<ScenarioQuestion[]>([]);
   const [step, setStep] = useState(0);
   const [started, setStarted] = useState(false);
@@ -335,7 +417,8 @@ const ScenarioQuiz: React.FC = () => {
       const correctJpAnswers = question.answer.filter((_, i) => i % 2 !== 0);
       const userJpAnswers = userAnswers[questionIndex] || {};
 
-      question.dialogue.forEach((dialogueLine, lineIndex) => {
+      const displayDialogue = language === 'en' && question.dialogueEn ? question.dialogueEn : question.dialogue;
+      displayDialogue.forEach((dialogueLine, lineIndex) => {
         const userAnswer = userJpAnswers[lineIndex] || '';
         const correctAnswer = correctJpAnswers[lineIndex];
 
@@ -473,7 +556,7 @@ const ScenarioQuiz: React.FC = () => {
               </div>
               
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4">
-                {current.dialogue.map((line, index) => (
+                {(language === 'en' && current.dialogueEn ? current.dialogueEn : current.dialogue).map((line, index) => (
                   <div key={index}>
                     <p className="text-base leading-relaxed mb-2">{line}</p>
                     <Input
