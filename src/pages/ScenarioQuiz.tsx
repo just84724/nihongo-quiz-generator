@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plane, Home, ShoppingBag, Camera, Coffee, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -292,6 +294,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
 
 const ScenarioQuiz: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [randomizedQuestions, setRandomizedQuestions] = useState<ScenarioQuestion[]>([]);
   const [step, setStep] = useState(0);
   const [started, setStarted] = useState(false);
@@ -396,19 +399,20 @@ const ScenarioQuiz: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-8">
+      <LanguageSwitcher />
       <div className="max-w-4xl w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
         <div className="flex items-center mb-4">
           <Button variant="ghost" size="sm" onClick={handleBack} className="mr-2">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-2xl font-bold">情境練習題</h1>
+          <h1 className="text-2xl font-bold">{t('scenarioPractice')}</h1>
         </div>
         
         {!started ? (
           <div className="flex flex-col items-center">
             <div className="text-lg mb-6 text-center">
-              <p>歡迎來到情境練習！</p>
-              <p>這裡有 6 個不同場景的日文對話，讓您練習日常會話。</p>
+              <p>{t('scenarioWelcome')}</p>
+              <p>{t('scenarioDescription')}</p>
             </div>
             
             <div className="grid grid-cols-2 gap-4 mb-6 w-full">
@@ -421,7 +425,7 @@ const ScenarioQuiz: React.FC = () => {
                       <span className="font-medium">{scenario.title}</span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {scenario.dialogue.length} 段對話
+                      {scenario.dialogue.length} {t('dialogueSegments')}
                     </p>
                   </div>
                 );
@@ -429,7 +433,7 @@ const ScenarioQuiz: React.FC = () => {
             </div>
             
             <Button onClick={handleStart} className="w-full" size="lg">
-              開始練習
+              {t('startPractice')}
             </Button>
           </div>
         ) : !finished ? (
@@ -441,20 +445,20 @@ const ScenarioQuiz: React.FC = () => {
               <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
                 <AlertDialogTrigger asChild>
                   <Button variant="outline" size="sm">
-                    退出練習
+                    {t('exitPractice')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>確認退出？</AlertDialogTitle>
+                    <AlertDialogTitle>{t('confirmExit')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      您確定要退出情境練習嗎？進度將會重置。
+                      {t('exitConfirmMessage')}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>繼續練習</AlertDialogCancel>
+                    <AlertDialogCancel>{t('continuePractice')}</AlertDialogCancel>
                     <AlertDialogAction onClick={handleExit}>
-                      確認退出
+                      {t('confirmExit')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -472,7 +476,7 @@ const ScenarioQuiz: React.FC = () => {
                   <div key={index}>
                     <p className="text-base leading-relaxed mb-2">{line}</p>
                     <Input
-                      placeholder="請輸入日文翻譯"
+                      placeholder={t('enterJapaneseTranslation')}
                       value={userAnswers[step]?.[index] || ''}
                       onChange={(e) => handleAnswerChange(step, index, e.target.value)}
                       className="text-base"
@@ -488,22 +492,22 @@ const ScenarioQuiz: React.FC = () => {
                 variant="outline"
                 disabled={step === 0}
               >
-                上一個場景
+                {t('previousScenario')}
               </Button>
               <Button onClick={handleNext}>
-                {step === randomizedQuestions.length - 1 ? "完成練習" : "下一個場景"}
+                {step === randomizedQuestions.length - 1 ? t('finishPractice') : t('nextScenario')}
               </Button>
             </div>
           </>
         ) : (
           <div className="flex flex-col items-center text-center">
-            <div className="text-2xl font-bold mb-4">練習完成！</div>
+            <div className="text-2xl font-bold mb-4">{t('scenarioComplete')}</div>
             <div className="text-lg mb-6">
-              <p>恭喜您完成了所有 {randomizedQuestions.length} 個情境練習！</p>
+              <p>{t('scenarioCompleteMessage', { count: randomizedQuestions.length.toString() })}</p>
               {incorrectAnswers.length > 0 ? (
-                <p className="text-destructive mt-2">您有 {incorrectAnswers.length} 處回答錯誤。</p>
+                <p className="text-destructive mt-2">{t('incorrectAnswersCount', { count: incorrectAnswers.length.toString() })}</p>
               ) : (
-                <p className="text-green-600 mt-2">太棒了，全部答對！</p>
+                <p className="text-green-600 mt-2">{t('allCorrect')}</p>
               )}
             </div>
             
@@ -511,27 +515,27 @@ const ScenarioQuiz: React.FC = () => {
               <div className="space-y-2 w-full max-w-sm">
                 {incorrectAnswers.length > 0 && (
                   <Button onClick={() => setResultsView('incorrect')} variant="destructive" className="w-full">
-                    查看錯誤答案
+                    {t('viewIncorrectAnswers')}
                   </Button>
                 )}
                 <Button onClick={() => setResultsView('all')} variant="default" className="w-full">
-                  查看所有答案
+                  {t('viewAllAnswers')}
                 </Button>
                 <Button onClick={handleRestart} variant="outline" className="w-full">
-                  重新練習
+                  {t('restartPractice')}
                 </Button>
                 <Button onClick={handleBack} variant="secondary" className="w-full">
-                  回到首頁
+                  {t('backToHome')}
                 </Button>
               </div>
             ) : (
               <div className="w-full text-left">
                 <div className="mb-4 flex justify-between items-center">
                   <h2 className="text-xl font-bold">
-                    {resultsView === 'incorrect' ? '錯誤答案列表' : '所有場景答案'}
+                    {resultsView === 'incorrect' ? t('incorrectAnswersList') : t('allScenarioAnswers')}
                   </h2>
                   <Button onClick={() => setResultsView('none')} variant="outline" size="sm">
-                    隱藏
+                    {t('hide')}
                   </Button>
                 </div>
                 
@@ -542,10 +546,10 @@ const ScenarioQuiz: React.FC = () => {
                         <p className="font-semibold text-sm text-muted-foreground">{item.scenarioTitle}</p>
                         <p className="mt-2 text-base">{item.dialogueLine}</p>
                         <p className="text-destructive mt-1">
-                          <span className="font-medium">你的答案：</span>{item.userAnswer || '（未填寫）'}
+                          <span className="font-medium">{t('yourAnswer')}</span>{item.userAnswer || t('notFilled')}
                         </p>
                         <p className="text-green-600 dark:text-green-500">
-                          <span className="font-medium">正確答案：</span>{item.correctAnswer}
+                          <span className="font-medium">{t('correctAnswer')}</span>{item.correctAnswer}
                         </p>
                       </div>
                     ))
@@ -570,10 +574,10 @@ const ScenarioQuiz: React.FC = () => {
                 
                 <div className="space-y-2 max-w-sm mx-auto">
                   <Button onClick={handleRestart} variant="outline" className="w-full">
-                    重新練習
+                    {t('restartPractice')}
                   </Button>
                   <Button onClick={handleBack} variant="default" className="w-full">
-                    回到首頁
+                    {t('backToHome')}
                   </Button>
                 </div>
               </div>

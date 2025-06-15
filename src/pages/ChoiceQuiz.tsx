@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 // 選擇題型別定義
 type ChoiceQuestion = {
@@ -116,6 +117,7 @@ const choiceQuestions: ChoiceQuestion[] = [
 
 const ChoiceQuiz: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [randomizedQuestions, setRandomizedQuestions] = useState<ChoiceQuestion[]>([]);
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -174,12 +176,13 @@ const ChoiceQuiz: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+      <LanguageSwitcher />
       <div className="max-w-lg w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
         <div className="flex items-center mb-4">
           <Button variant="ghost" size="sm" onClick={handleBack} className="mr-2">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-2xl font-bold">助詞練習題（選擇題）</h1>
+          <h1 className="text-2xl font-bold">{t('choiceQuizTitle')}</h1>
         </div>
         
         {!finished ? (
@@ -204,7 +207,7 @@ const ChoiceQuiz: React.FC = () => {
               {selected && (
                 <div className="flex justify-end mt-4">
                   <Button variant="default" onClick={handleNext}>
-                    {step === randomizedQuestions.length - 1 ? "完成" : "下一題"}
+                    {step === randomizedQuestions.length - 1 ? t('finish') : t('next')}
                   </Button>
                 </div>
               )}
@@ -212,22 +215,22 @@ const ChoiceQuiz: React.FC = () => {
           </>
         ) : (
           <div className="flex flex-col items-center">
-            <div className="text-2xl font-bold mb-4">練習完成！</div>
+            <div className="text-2xl font-bold mb-4">{t('practiceCompleted')}</div>
             <div className="text-lg mb-6 text-center">
-              <p>總題數：{userAnswers.length}</p>
-              <p className="text-green-600">答對：{correctCount} 題</p>
-              <p className="text-red-600">答錯：{wrongAnswers.length} 題</p>
-              <p>正確率：{userAnswers.length > 0 ? Math.round((correctCount / userAnswers.length) * 100) : 0}%</p>
+              <p>{t('totalQuestions')}{userAnswers.length}</p>
+              <p className="text-green-600">{t('correct')}{correctCount} 題</p>
+              <p className="text-red-600">{t('incorrect')}{wrongAnswers.length} 題</p>
+              <p>{t('accuracy')}{userAnswers.length > 0 ? Math.round((correctCount / userAnswers.length) * 100) : 0}%</p>
             </div>
             
             {wrongAnswers.length > 0 && (
               <div className="w-full mb-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <h3 className="text-lg font-bold mb-3 text-red-700 dark:text-red-300">錯誤題目：</h3>
+                <h3 className="text-lg font-bold mb-3 text-red-700 dark:text-red-300">{t('incorrectQuestions')}</h3>
                 {wrongAnswers.map((answer, index) => (
                   <div key={index} className="mb-3 p-3 bg-white dark:bg-card rounded border">
                     <p className="font-medium">{answer.question}</p>
-                    <p className="text-red-600">你的答案：{answer.userChoice}</p>
-                    <p className="text-green-600">正確答案：{answer.correctAnswer}</p>
+                    <p className="text-red-600">{t('yourAnswer')}{answer.userChoice}</p>
+                    <p className="text-green-600">{t('correctAnswer')}{answer.correctAnswer}</p>
                   </div>
                 ))}
               </div>
@@ -235,10 +238,10 @@ const ChoiceQuiz: React.FC = () => {
             
             <div className="space-y-2 w-full">
               <Button onClick={handleRestart} variant="outline" className="w-full">
-                再練一次
+                {t('practiceAgain')}
               </Button>
               <Button onClick={handleBack} variant="default" className="w-full">
-                回到首頁
+                {t('backToHome')}
               </Button>
             </div>
           </div>

@@ -1,8 +1,11 @@
+
 import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -111,6 +114,7 @@ type UserAnswer = {
 
 const AdjectiveQuiz: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get('mode');
   
@@ -219,12 +223,13 @@ const AdjectiveQuiz: React.FC = () => {
   if (!mode) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+        <LanguageSwitcher />
         <div className="max-w-lg w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
           <div className="flex items-center mb-6">
             <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="mr-2">
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-2xl font-bold">選擇練習模式</h1>
+            <h1 className="text-2xl font-bold">{t('selectPracticeMode')}</h1>
           </div>
           
           <div className="space-y-3">
@@ -233,7 +238,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              否定形練習（くない / でない）
+              {t('negativeForm')}
             </Button>
             
             <Button 
@@ -241,7 +246,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              否定形（過去）練習（くなかった / でなかった）
+              {t('negativePastForm')}
             </Button>
             
             <Button 
@@ -249,7 +254,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              中止形練習（くて / で）
+              {t('conjunctiveForm')}
             </Button>
             
             <Button 
@@ -257,7 +262,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              仮定形練習（ければ / なら）
+              {t('conditionalForm')}
             </Button>
             
             <Button 
@@ -265,7 +270,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              推量法練習（かろう / だろう）
+              {t('presumptiveForm')}
             </Button>
             
             <Button 
@@ -273,7 +278,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              過去法練習（かった / だった）
+              {t('pastForm')}
             </Button>
             
             <Button 
@@ -281,7 +286,7 @@ const AdjectiveQuiz: React.FC = () => {
               variant="outline" 
               className="w-full h-12 text-left justify-start"
             >
-              副詞法練習（く / に）
+              {t('adverbForm')}
             </Button>
           </div>
         </div>
@@ -340,19 +345,20 @@ const AdjectiveQuiz: React.FC = () => {
 
   const getModeName = (mode: string) => {
     const modeNames: { [key: string]: string } = {
-      'negative': '否定形',
-      'negative-past': '否定形（過去）',
-      'conjunctive': '中止形',
-      'conditional': '仮定形',
-      'presumptive': '推量法',
-      'past': '過去法',
-      'adverb': '副詞法'
+      'negative': t('negativeForm').split('（')[0],
+      'negative-past': t('negativePastForm').split('（')[0],
+      'conjunctive': t('conjunctiveForm').split('（')[0],
+      'conditional': t('conditionalForm').split('（')[0],
+      'presumptive': t('presumptiveForm').split('（')[0],
+      'past': t('pastForm').split('（')[0],
+      'adverb': t('adverbForm').split('（')[0]
     };
-    return modeNames[mode] || '形容詞變化';
+    return modeNames[mode] || t('adjectivePractice');
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+      <LanguageSwitcher />
       <div className="max-w-lg w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
@@ -371,14 +377,14 @@ const AdjectiveQuiz: React.FC = () => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>你是否要退出？</AlertDialogTitle>
+                  <AlertDialogTitle>{t('exitQuestion')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    退出後將顯示你目前的答題情況和正確答案。
+                    {t('exitMessage')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>繼續答題</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleExit}>退出</AlertDialogAction>
+                  <AlertDialogCancel>{t('continueAnswering')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleExit}>{t('exitNow')}</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -396,45 +402,45 @@ const AdjectiveQuiz: React.FC = () => {
                   {currentQuestion.baseForm}（{currentQuestion.meaning}）
                 </div>
                 <div className="text-sm text-muted-foreground mb-2">
-                  {currentQuestion.type === 'i' ? 'い形容詞' : 'な形容詞'} - {currentQuestion.formName}
+                  {currentQuestion.type === 'i' ? t('iAdjective') : t('naAdjective')} - {currentQuestion.formName}
                 </div>
                 <div className="text-sm">
-                  請填入變化後的形式：{currentQuestion.baseForm} → ?
+                  {t('enterChangedForm', { base: currentQuestion.baseForm })}
                 </div>
               </div>
               
               <form onSubmit={handleSubmit}>
                 <Input
-                  placeholder="請輸入變化後的形容詞"
+                  placeholder={t('enterConjugatedAdjective')}
                   className="mb-4"
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                   autoFocus
                 />
                 <Button type="submit" disabled={userInput.trim() === ""} className="w-full">
-                  {currentIndex === questions.length - 1 ? "完成" : "下一題"}
+                  {currentIndex === questions.length - 1 ? t('finish') : t('next')}
                 </Button>
               </form>
             </div>
           </>
         ) : (
           <div className="flex flex-col items-center">
-            <div className="text-2xl font-bold mb-4">練習完成！</div>
+            <div className="text-2xl font-bold mb-4">{t('practiceCompleted')}</div>
             <div className="text-lg mb-6 text-center">
-              <p>總題數：{userAnswers.length}</p>
-              <p className="text-green-600">答對：{correctCount} 題</p>
-              <p className="text-red-600">答錯：{wrongAnswers.length} 題</p>
-              <p>正確率：{userAnswers.length > 0 ? Math.round((correctCount / userAnswers.length) * 100) : 0}%</p>
+              <p>{t('totalQuestions')}{userAnswers.length}</p>
+              <p className="text-green-600">{t('correct')}{correctCount} 題</p>
+              <p className="text-red-600">{t('incorrect')}{wrongAnswers.length} 題</p>
+              <p>{t('accuracy')}{userAnswers.length > 0 ? Math.round((correctCount / userAnswers.length) * 100) : 0}%</p>
             </div>
             
             {wrongAnswers.length > 0 && (
               <div className="w-full mb-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <h3 className="text-lg font-bold mb-3 text-red-700 dark:text-red-300">錯誤題目：</h3>
+                <h3 className="text-lg font-bold mb-3 text-red-700 dark:text-red-300">{t('incorrectQuestions')}</h3>
                 {wrongAnswers.map((answer, index) => (
                   <div key={index} className="mb-3 p-3 bg-white dark:bg-card rounded border">
                     <p className="font-medium">{answer.question}</p>
-                    <p className="text-red-600">你的答案：{answer.userInput || "未填寫"}</p>
-                    <p className="text-green-600">正確答案：{answer.correctAnswer}</p>
+                    <p className="text-red-600">{t('yourAnswer')}{answer.userInput || "未填寫"}</p>
+                    <p className="text-green-600">{t('correctAnswer')}{answer.correctAnswer}</p>
                   </div>
                 ))}
               </div>
@@ -442,10 +448,10 @@ const AdjectiveQuiz: React.FC = () => {
             
             <div className="space-y-2 w-full">
               <Button onClick={handleRestart} variant="outline" className="w-full">
-                再練一次
+                {t('practiceAgain')}
               </Button>
               <Button onClick={handleBack} variant="default" className="w-full">
-                回到首頁
+                {t('backToHome')}
               </Button>
             </div>
           </div>
@@ -456,9 +462,13 @@ const AdjectiveQuiz: React.FC = () => {
       <Dialog open={showAnswersDialog} onOpenChange={setShowAnswersDialog}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>你之前寫的題目以及答案</DialogTitle>
+            <DialogTitle>{t('previousAnswersTitle')}</DialogTitle>
             <DialogDescription>
-              已完成 {userAnswers.length} 題，答對 {correctCount} 題，答錯 {wrongAnswers.length} 題
+              {t('completedStatus', { 
+                answered: userAnswers.length.toString(), 
+                correct: correctCount.toString(), 
+                incorrect: wrongAnswers.length.toString() 
+              })}
             </DialogDescription>
           </DialogHeader>
           
@@ -467,19 +477,19 @@ const AdjectiveQuiz: React.FC = () => {
               <div key={index} className={`p-4 rounded-lg border ${answer.isCorrect ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}>
                 <p className="font-medium mb-2">{answer.question}</p>
                 <p className={answer.isCorrect ? 'text-green-600' : 'text-red-600'}>
-                  你的答案：{answer.userInput || "未填寫"}
+                  {t('yourAnswer')}{answer.userInput || "未填寫"}
                 </p>
-                <p className="text-green-600">正確答案：{answer.correctAnswer}</p>
+                <p className="text-green-600">{t('correctAnswer')}{answer.correctAnswer}</p>
               </div>
             ))}
           </div>
           
           <div className="flex gap-2 mt-6">
             <Button onClick={() => setShowAnswersDialog(false)} variant="outline" className="flex-1">
-              關閉
+              {t('close')}
             </Button>
             <Button onClick={handleBack} className="flex-1">
-              回到首頁
+              {t('backToHome')}
             </Button>
           </div>
         </DialogContent>
