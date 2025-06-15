@@ -162,48 +162,95 @@ const translations = {
     
     // 場景標題
     scenario1: "Scenario 1: Airport",
-    scenario2: "Scenario 2: On the Plane",
+    scenario2: "Scenario 2: On the Plane", 
     scenario3: "Scenario 3: At Home",
     scenario4: "Scenario 4: Shopping Mall",
     scenario5: "Scenario 5: Leaving the Cinema",
     scenario6: "Scenario 6: Airport",
     
-    // 形容詞練習
-    selectPracticeMode: "Select Practice Mode",
-    negativeForm: "Negative Form Practice (くない / でない)",
-    negativePastForm: "Negative Past Form Practice (くなかった / でなかった)",
-    conjunctiveForm: "Conjunctive Form Practice (くて / で)",
-    conditionalForm: "Conditional Form Practice (ければ / なら)",
-    presumptiveForm: "Presumptive Form Practice (かろう / だろう)",
-    pastForm: "Past Form Practice (かった / だった)",
-    adverbForm: "Adverb Form Practice (く / に)",
-    enterConjugatedAdjective: "Enter the conjugated adjective",
-    iAdjective: "i-adjective",
-    naAdjective: "na-adjective",
-    enterChangedForm: "Enter the conjugated form: {base} → ?",
-    practiceCompleted: "Practice Complete!",
-    totalQuestions: "Total questions: ",
-    correct: "Correct: ",
-    incorrect: "Incorrect: ",
-    accuracy: "Accuracy: ",
-    incorrectQuestions: "Incorrect Questions:",
-    practiceAgain: "Practice Again",
-    exitQuestion: "Do you want to exit?",
-    exitMessage: "After exiting, your current answers and correct answers will be displayed.",
-    continueAnswering: "Continue Answering",
-    exitNow: "Exit",
-    previousAnswersTitle: "Your Previous Questions and Answers",
-    completedStatus: "Completed {answered} questions, {correct} correct, {incorrect} incorrect",
-    close: "Close",
-    
-    // 選擇題
-    choiceQuizTitle: "Particle Practice (Multiple Choice)",
-    
-    // 填充題
-    fillBlankQuizTitle: "Particle Practice (Fill in the Blank)",
-    
-    // 404頁面
-    pageNotFound: "Page Not Found"
+    // Scenario dialogue translations
+    scenario1_dialogue: [
+      "A: Sorry.",
+      "B: You're late.",
+      "A: Yeah, there was some traffic.",
+      "B: Oh no, I lost my passport.",
+      "A: Isn't it in your bag?",
+      "B: No, I just took it out to look at it.",
+      "A: Oh, I see it, it's under the chair.",
+      "B: Ah, here it is. What time is it now?",
+      "A: It's 12 o'clock.",
+      "B: It's almost time to check in.",
+      "A: Yeah. Let's go."
+    ],
+    scenario2_dialogue: [
+      "A: Wake up, chat with me.",
+      "B: Ugh, I'm a bit sleepy.",
+      "A: What did you do last night?",
+      "B: I was playing computer games all night. Too excited, couldn't sleep.",
+      "A: Let's plan our vacation.",
+      "B: Sure.",
+      "A: Today is Friday, do you have time this Sunday?",
+      "B: Sunday? No, I don't.",
+      "A: How about next Wednesday?",
+      "B: Wednesday is fine.",
+      "A: Okay, let's meet at 10 AM Wednesday at McDonald's entrance.",
+      "B: Alright, see you then.",
+      "(Announcement: The plane is about to land, please prepare. Today is July 15th, Friday, outdoor temperature is 35°C. Have a pleasant journey.)"
+    ],
+    scenario3_dialogue: [
+      "A: Good morning! You're up early!",
+      "B: Yeah, I'm going shopping with friends today.",
+      "A: It might rain today, remember to bring an umbrella.",
+      "B: Okay, got it.",
+      "A: What time will you be back tonight?",
+      "B: Around 7 PM.",
+      "A: Will you come back for dinner?",
+      "B: No, we'll eat out.",
+      "A: Okay, have fun.",
+      "B: Bye."
+    ],
+    scenario4_dialogue: [
+      "A: Good morning!",
+      "B: Good morning!",
+      "A: The second floor sells bags, let's go take a look.",
+      "B: Sure!",
+      "A: Look at this bag, it's so cute.",
+      "B: Yeah, really! How much is it?",
+      "A: 2100 yen.",
+      "B: Wow, a bit expensive.",
+      "A: That one's not bad either.",
+      "B: Yeah, let's go look.",
+      "A: Wow, this one's even more expensive.",
+      "B: I think this one's pretty good.",
+      "A: It's beautiful and cheap, let's buy this one.",
+      "B: Okay, good.",
+      "A: Where should we go next?",
+      "B: Let's go watch a movie.",
+      "A: Sure."
+    ],
+    scenario5_dialogue: [
+      "A: What a boring movie.",
+      "B: Yeah, I almost fell asleep.",
+      "A: I'm a bit hungry, let's go eat dinner before going home.",
+      "B: Sure, what do you want to eat?",
+      "A: How about sushi?",
+      "B: No, we just had it yesterday. How about steak?",
+      "A: Sure.",
+      "B: For dessert, I want matcha ice cream.",
+      "A: Yeah, matcha ice cream is delicious, it's my favorite too.",
+      "B: Let's go."
+    ],
+    scenario6_dialogue: [
+      "A: The vacation went by so fast.",
+      "B: Yeah, but it was also very enjoyable.",
+      "A: Where did you go during this vacation?",
+      "B: I traveled to Beijing. It was so hot. Then I just stayed home watching TV and surfing the internet. How about you?",
+      "A: I didn't go anywhere. Usually just stayed home alone. Occasionally went to the park with my parents on weekends.",
+      "B: That sounds nice too.",
+      "(Announcement: Passengers on flight AC087, the plane is about to take off, please go to gate 17 to prepare for boarding.)",
+      "A: The boring days are about to start again.",
+      "B: Sigh, yeah, really looking forward to the next vacation."
+    ]
   }
 };
 
