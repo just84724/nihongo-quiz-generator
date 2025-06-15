@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,10 +27,10 @@ import {
 // 授受動詞題型定義
 type GivingReceivingQuestion = {
   id: number;
-  chinese: string;
+  chineseKey: string;
   japanese: string;
   correctAnswers: string[];
-  hint: string;
+  hintKey: string;
 };
 
 type UserAnswer = {
@@ -47,143 +46,143 @@ type UserAnswer = {
 const givingReceivingQuestions: GivingReceivingQuestion[] = [
   {
     id: 1,
-    chinese: "老師教我日語文法",
+    chineseKey: "grq1_chinese",
     japanese: "先生は私に日本語の文法を説明して（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予我"
+    hintKey: "grq_hint_receive"
   },
   {
     id: 2,
-    chinese: "母親買糖果給我",
+    chineseKey: "grq2_chinese",
     japanese: "母は私に飴を買って（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予我"
+    hintKey: "grq_hint_receive"
   },
   {
     id: 3,
-    chinese: "高野先生教我英文",
+    chineseKey: "grq3_chinese",
     japanese: "高野さんは私に英語を教えて（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予我"
+    hintKey: "grq_hint_receive"
   },
   {
     id: 4,
-    chinese: "電氣行的人搬新的電視來給我",
+    chineseKey: "grq4_chinese",
     japanese: "電気屋の人は私に新しいテレビを運んで（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予我"
+    hintKey: "grq_hint_receive"
   },
   {
     id: 5,
-    chinese: "區公所的人告訴我們路怎麼走",
+    chineseKey: "grq5_chinese",
     japanese: "役所の人は私たちに道を案内して（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予我"
+    hintKey: "grq_hint_receive"
   },
   {
     id: 6,
-    chinese: "那位老爺爺替妹妹修鞋子",
+    chineseKey: "grq6_chinese",
     japanese: "あのお爺さんは妹に靴をなおして（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予第三者"
+    hintKey: "grq_hint_third_party_receive"
   },
   {
     id: 7,
-    chinese: "旅行社的人替我的家人辦國外旅行的簽證",
+    chineseKey: "grq7_chinese",
     japanese: "旅行会社の人は家族に海外旅行のビザを申し込んで（＿）ます。",
     correctAnswers: ["くれ"],
-    hint: "對方給予第三者"
+    hintKey: "grq_hint_third_party_receive"
   },
   {
     id: 8,
-    chinese: "王先生教導竹內先生工作的方法",
+    chineseKey: "grq8_chinese",
     japanese: "王さんは竹内さんに仕事の方法を教えて（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "我給對方或對方給第三者"
+    hintKey: "grq_hint_give"
   },
   {
     id: 9,
-    chinese: "我告訴你作業的答案",
+    chineseKey: "grq9_chinese",
     japanese: "私はあなたに宿題の答えを教えて（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "我給對方"
+    hintKey: "grq_hint_give_other"
   },
   {
     id: 10,
-    chinese: "母親買玩具給弟弟",
+    chineseKey: "grq10_chinese",
     japanese: "母は弟に玩具を買って（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "對方給第三者"
+    hintKey: "grq_hint_third_party_give"
   },
   {
     id: 11,
-    chinese: "王先生彈吉他給女朋友聽",
+    chineseKey: "grq11_chinese",
     japanese: "王さんは彼女にギターを弾いて（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "對方給第三者"
+    hintKey: "grq_hint_third_party_give"
   },
   {
     id: 12,
-    chinese: "老師借給班上同學漂亮的繪本",
+    chineseKey: "grq12_chinese",
     japanese: "先生はクラスメートに綺麗な絵本を貸して（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "對方給第三者"
+    hintKey: "grq_hint_third_party_give"
   },
   {
     id: 13,
-    chinese: "宿舍管理員將郵件放到大家的信箱當中",
+    chineseKey: "grq13_chinese",
     japanese: "寮の管理員さんは郵便物をみんなのメールボックスに入れて（＿）ます。",
     correctAnswers: ["あげ"],
-    hint: "對方給第三者"
+    hintKey: "grq_hint_third_party_give"
   },
   {
     id: 14,
-    chinese: "岸部先生教我吉他",
+    chineseKey: "grq14_chinese",
     japanese: "私は岸部さんにギターの弾き方を教えて（＿）います。",
     correctAnswers: ["もらって"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 15,
-    chinese: "朋友幫我買了書",
+    chineseKey: "grq15_chinese",
     japanese: "私は友達に本を買って（＿）ました。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 16,
-    chinese: "弟弟幫我打掃房間",
+    chineseKey: "grq16_chinese",
     japanese: "私は弟に部屋を掃除して（＿）ます。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 17,
-    chinese: "旅行社的人幫我預約旅館",
+    chineseKey: "grq17_chinese",
     japanese: "私は旅行会社の人にホテルを予約して（＿）ます。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 18,
-    chinese: "他的妻子為他做中午的便當",
+    chineseKey: "grq18_chinese",
     japanese: "彼は妻にお昼のお弁当を作って（＿）ます。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 19,
-    chinese: "她的男朋友幫她付吃飯錢",
+    chineseKey: "grq19_chinese",
     japanese: "彼女は彼氏に食事代を払って（＿）ます。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   },
   {
     id: 20,
-    chinese: "林先生教田村先生中文",
+    chineseKey: "grq20_chinese",
     japanese: "田村さんは林さんに中国語を教えて（＿）ます。",
     correctAnswers: ["もらい"],
-    hint: "得到某人的幫助"
+    hintKey: "grq_hint_get_help"
   }
 ];
 
@@ -222,7 +221,7 @@ const GivingReceivingQuizComponent: React.FC = () => {
 
     const userAnswer: UserAnswer = {
       questionId: current.id,
-      chinese: current.chinese,
+      chinese: t(current.chineseKey),
       japanese: current.japanese,
       userInput: value,
       correctAnswers: current.correctAnswers,
@@ -307,13 +306,13 @@ const GivingReceivingQuizComponent: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">中文意思：</div>
-                  <div className="text-base font-medium mb-3">{current.chinese}</div>
+                  <div className="text-base font-medium mb-3">{t(current.chineseKey)}</div>
                   <div className="text-sm text-gray-600 dark:text-gray-300 mb-1">日文填空：</div>
                   <div className="text-xl font-medium">{current.japanese}</div>
                 </div>
                 <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                   <div className="text-sm text-yellow-700 dark:text-yellow-300">
-                    提示：{current.hint}
+                    提示：{t(current.hintKey)}
                   </div>
                 </div>
                 <Input

@@ -8,68 +8,68 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Question {
   id: number;
-  chinese: string;
+  chineseKey: string;
   japanese: string;
   answer: string;
-  hint?: string;
+  hintKey?: string;
   category: string;
 }
 
 const allQuestions: Question[] = [
   // てしまう questions
-  { id: 1, chinese: "巴士開走了。", japanese: "バスが行って＿＿＿＿＿", answer: "しまった", hint: "表示自己不願意但又不可能挽回之意", category: "てしまう" },
-  { id: 2, chinese: "(它)被擦掉了。", japanese: "消して＿＿＿＿＿", answer: "しまった", hint: "表示動作已完全完成", category: "てしまう" },
-  { id: 3, chinese: "沒趕上公車了。", japanese: "バスに乗り遅れて＿＿＿＿＿", answer: "しまった", hint: "表示不願意的結果", category: "てしまう" },
-  { id: 4, chinese: "(我)很頭痛。", japanese: "困って＿＿＿＿＿", answer: "しまった", hint: "表示困擾的狀態", category: "てしまう" },
-  { id: 5, chinese: "(我)掉了錢包。", japanese: "財布をなくして＿＿＿＿＿", answer: "しまった", hint: "表示不好的結果", category: "てしまう" },
-  { id: 6, chinese: "掉到水裡了。", japanese: "水に落ちて＿＿＿＿＿", answer: "しまった", hint: "表示意外的結果", category: "てしまう" },
-  { id: 7, chinese: "(它)被吃掉了。", japanese: "食べられて＿＿＿＿＿", answer: "しまった", hint: "被動+完成", category: "てしまう" },
-  { id: 8, chinese: "(我)忘掉了。", japanese: "忘れて＿＿＿＿＿", answer: "しまった", hint: "表示完全忘記", category: "てしまう" },
+  { id: 1, chineseKey: "avq1_chinese", japanese: "バスが行って＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_unwilling", category: "てしまう" },
+  { id: 2, chineseKey: "avq2_chinese", japanese: "消して＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_complete", category: "てしまう" },
+  { id: 3, chineseKey: "avq3_chinese", japanese: "バスに乗り遅れて＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_unwilling_result", category: "てしまう" },
+  { id: 4, chineseKey: "avq4_chinese", japanese: "困って＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_trouble", category: "てしまう" },
+  { id: 5, chineseKey: "avq5_chinese", japanese: "財布をなくして＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_bad_result", category: "てしまう" },
+  { id: 6, chineseKey: "avq6_chinese", japanese: "水に落ちて＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_accident", category: "てしまう" },
+  { id: 7, chineseKey: "avq7_chinese", japanese: "食べられて＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_passive_complete", category: "てしまう" },
+  { id: 8, chineseKey: "avq8_chinese", japanese: "忘れて＿＿＿＿＿", answer: "しまった", hintKey: "avq_hint_completely_forget", category: "てしまう" },
   
   // ておく questions
-  { id: 9, chinese: "(我們)要把車子停在停車場嗎？", japanese: "駐車場に車を＿＿＿＿＿ますか？", answer: "置き", hint: "原本動詞「置く」的意思", category: "ておく" },
-  { id: 10, chinese: "好好考慮之後再做吧！", japanese: "よく考えて＿＿＿＿＿からやりましょう。", answer: "おいて", hint: "事先做某事", category: "ておく" },
-  { id: 11, chinese: "請把門關好。", japanese: "戸を閉めて＿＿＿＿＿下さい。", answer: "おいて", hint: "維持關門的狀態", category: "ておく" },
-  { id: 12, chinese: "想說話的傢伙讓他說吧！", japanese: "言いたい奴には言わせて＿＿＿＿＿ましょう。", answer: "おき", hint: "放任其為", category: "ておく" },
-  { id: 13, chinese: "名字就先假定為田中。", japanese: "名前は田中として＿＿＿＿＿", answer: "おく", hint: "姑且、暫且", category: "ておく" },
-  { id: 14, chinese: "客人來之前先買好糕點。", japanese: "お客さんが来る前にお菓子を買って＿＿＿＿＿ます。", answer: "おき", hint: "事先準備", category: "ておく" },
-  { id: 15, chinese: "客人來之前先整理好房間。", japanese: "客が来る前に部屋を片付けて＿＿＿＿＿ます。", answer: "おき", hint: "事先整理", category: "ておく" },
-  { id: 16, chinese: "客人來之前先準備好餐食。", japanese: "客が来る前に食事を用意して＿＿＿＿＿ます。", answer: "おき", hint: "事先準備", category: "ておく" },
-  { id: 17, chinese: "客人來之前先打掃好。", japanese: "客が来る前に掃除して＿＿＿＿＿ます。", answer: "おき", hint: "事先打掃", category: "ておく" },
-  { id: 18, chinese: "客人來之前先把行李拿到外面。", japanese: "客が来る前に荷物を外へ出して＿＿＿＿＿ます。", answer: "おき", hint: "事先移動", category: "ておく" },
+  { id: 9, chineseKey: "avq9_chinese", japanese: "駐車場に車を＿＿＿＿＿ますか？", answer: "置き", hintKey: "avq_hint_place_verb", category: "ておく" },
+  { id: 10, chineseKey: "avq10_chinese", japanese: "よく考えて＿＿＿＿＿からやりましょう。", answer: "おいて", hintKey: "avq_hint_beforehand", category: "ておく" },
+  { id: 11, chineseKey: "avq11_chinese", japanese: "戸を閉めて＿＿＿＿＿下さい。", answer: "おいて", hintKey: "avq_hint_maintain_state", category: "ておく" },
+  { id: 12, chineseKey: "avq12_chinese", japanese: "言いたい奴には言わせて＿＿＿＿＿ましょう。", answer: "おき", hintKey: "avq_hint_let_it_be", category: "ておく" },
+  { id: 13, chineseKey: "avq13_chinese", japanese: "名前は田中として＿＿＿＿＿", answer: "おく", hintKey: "avq_hint_temporarily", category: "ておく" },
+  { id: 14, chineseKey: "avq14_chinese", japanese: "お客さんが来る前にお菓子を買って＿＿＿＿＿ます。", answer: "おき", hintKey: "avq_hint_prepare", category: "ておく" },
+  { id: 15, chineseKey: "avq15_chinese", japanese: "客が来る前に部屋を片付けて＿＿＿＿＿ます。", answer: "おき", hintKey: "avq_hint_prepare_clean", category: "ておく" },
+  { id: 16, chineseKey: "avq16_chinese", japanese: "客が来る前に食事を用意して＿＿＿＿＿ます。", answer: "おき", hintKey: "avq_hint_prepare_meal", category: "ておく" },
+  { id: 17, chineseKey: "avq17_chinese", japanese: "客が来る前に掃除して＿＿＿＿＿ます。", answer: "おき", hintKey: "avq_hint_clean_beforehand", category: "ておく" },
+  { id: 18, chineseKey: "avq18_chinese", japanese: "客が来る前に荷物を外へ出して＿＿＿＿＿ます。", answer: "おき", hintKey: "avq_hint_move_beforehand", category: "ておく" },
   
   // てみる questions  
-  { id: 19, chinese: "看電影看看。", japanese: "映画をみて＿＿＿＿＿。", answer: "みる", hint: "試著看看", category: "てみる" },
-  { id: 20, chinese: "試一試看看。", japanese: "試して＿＿＿＿＿。", answer: "みる", hint: "嘗試的意思", category: "てみる" },
-  { id: 21, chinese: "吃看看吧！", japanese: "食べて＿＿＿＿＿よう。", answer: "み", hint: "試著吃", category: "てみる" },
-  { id: 22, chinese: "喝看看吧！", japanese: "飲んで＿＿＿＿＿よう。", answer: "み", hint: "試著喝", category: "てみる" },
-  { id: 23, chinese: "找找看看吧！", japanese: "探して＿＿＿＿＿よう。", answer: "み", hint: "試著找", category: "てみる" },
-  { id: 24, chinese: "努力看看吧！", japanese: "頑張って＿＿＿＿＿よう。", answer: "み", hint: "試著努力", category: "てみる" },
-  { id: 25, chinese: "不去看看，是不會知道的。", japanese: "行って＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hint: "試著去", category: "てみる" },
-  { id: 26, chinese: "不讀看看，是不會知道的。", japanese: "読んで＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hint: "試著讀", category: "てみる" },
-  { id: 27, chinese: "不研究看看，是不會知道的。", japanese: "研究して＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hint: "試著研究", category: "てみる" },
+  { id: 19, chineseKey: "avq19_chinese", japanese: "映画をみて＿＿＿＿＿。", answer: "みる", hintKey: "avq_hint_try_watch", category: "てみる" },
+  { id: 20, chineseKey: "avq20_chinese", japanese: "試して＿＿＿＿＿。", answer: "みる", hintKey: "avq_hint_try", category: "てみる" },
+  { id: 21, chineseKey: "avq21_chinese", japanese: "食べて＿＿＿＿＿よう。", answer: "み", hintKey: "avq_hint_try_eat", category: "てみる" },
+  { id: 22, chineseKey: "avq22_chinese", japanese: "飲んで＿＿＿＿＿よう。", answer: "み", hintKey: "avq_hint_try_drink", category: "てみる" },
+  { id: 23, chineseKey: "avq23_chinese", japanese: "探して＿＿＿＿＿よう。", answer: "み", hintKey: "avq_hint_try_find", category: "てみる" },
+  { id: 24, chineseKey: "avq24_chinese", japanese: "頑張って＿＿＿＿＿よう。", answer: "み", hintKey: "avq_hint_try_effort", category: "てみる" },
+  { id: 25, chineseKey: "avq25_chinese", japanese: "行って＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hintKey: "avq_hint_try_go", category: "てみる" },
+  { id: 26, chineseKey: "avq26_chinese", japanese: "読んで＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hintKey: "avq_hint_try_read", category: "てみる" },
+  { id: 27, chineseKey: "avq27_chinese", japanese: "研究して＿＿＿＿＿なければ分かるはずはない。", answer: "みる", hintKey: "avq_hint_try_research", category: "てみる" },
   
   // てくる questions
-  { id: 28, chinese: "船進港了。", japanese: "船が入って＿＿＿＿＿ました。", answer: "き", hint: "由遠而近的移動", category: "てくる" },
-  { id: 29, chinese: "問題變的複雜起來了。", japanese: "問題が複雑になって＿＿＿＿＿た。", answer: "き", hint: "變化的過程", category: "てくる" },
-  { id: 30, chinese: "一直說到現在。", japanese: "今までしゃべって＿＿＿＿＿た。", answer: "き", hint: "持續到現在", category: "てくる" },
-  { id: 31, chinese: "出現了種種的問題。", japanese: "いろいろな問題が出て＿＿＿＿＿ました。", answer: "き", hint: "新事物的出現", category: "てくる" },
-  { id: 32, chinese: "雨開始下起來了。", japanese: "雨が降って＿＿＿＿＿ました。", answer: "き", hint: "動作的開始", category: "てくる" },
-  { id: 33, chinese: "把忘了帶來的東西去拿來。", japanese: "忘れ物を取って＿＿＿＿＿。", answer: "くる", hint: "做完動作後回來", category: "てくる" },
-  { id: 34, chinese: "父親昨天從日本回來了。", japanese: "昨日父は日本から帰って＿＿＿＿＿た。", answer: "き", hint: "由遠而近回來", category: "てくる" },
-  { id: 35, chinese: "會越來越熱。", japanese: "暑くなって＿＿＿＿＿。", answer: "くる", hint: "變化的趨勢", category: "てくる" },
-  { id: 36, chinese: "我去買書後回來。", japanese: "本を買って＿＿＿＿＿。", answer: "くる", hint: "做完動作後回來", category: "てくる" },
+  { id: 28, chineseKey: "avq28_chinese", japanese: "船が入って＿＿＿＿＿ました。", answer: "き", hintKey: "avq_hint_towards_speaker", category: "てくる" },
+  { id: 29, chineseKey: "avq29_chinese", japanese: "問題が複雑になって＿＿＿＿＿た。", answer: "き", hintKey: "avq_hint_change_process", category: "てくる" },
+  { id: 30, chineseKey: "avq30_chinese", japanese: "今までしゃべって＿＿＿＿＿た。", answer: "き", hintKey: "avq_hint_continue_until_now", category: "てくる" },
+  { id: 31, chineseKey: "avq31_chinese", japanese: "いろいろな問題が出て＿＿＿＿＿ました。", answer: "き", hintKey: "avq_hint_emergence", category: "てくる" },
+  { id: 32, chineseKey: "avq32_chinese", japanese: "雨が降って＿＿＿＿＿ました。", answer: "き", hintKey: "avq_hint_start_action", category: "てくる" },
+  { id: 33, chineseKey: "avq33_chinese", japanese: "忘れ物を取って＿＿＿＿＿。", answer: "くる", hintKey: "avq_hint_action_return", category: "てくる" },
+  { id: 34, chineseKey: "avq34_chinese", japanese: "昨日父は日本から帰って＿＿＿＿＿た。", answer: "き", hintKey: "avq_hint_return_towards", category: "てくる" },
+  { id: 35, chineseKey: "avq35_chinese", japanese: "暑くなって＿＿＿＿＿。", answer: "くる", hintKey: "avq_hint_change_trend", category: "てくる" },
+  { id: 36, chineseKey: "avq36_chinese", japanese: "本を買って＿＿＿＿＿。", answer: "くる", hintKey: "avq_hint_action_return", category: "てくる" },
   
   // ていく questions
-  { id: 37, chinese: "他回日本去了。", japanese: "あの人は日本へ帰って＿＿＿＿＿ました。", answer: "いき", category: "ていく" },
-  { id: 38, chinese: "要一個人活下去。", japanese: "一人で生きて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
-  { id: 39, chinese: "人是會死的。", japanese: "人間は死んで＿＿＿＿＿。", answer: "いく", category: "ていく" },
-  { id: 40, chinese: "天氣會越來越暖和。", japanese: "天気が温まって＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
-  { id: 41, chinese: "(我)結婚以後會繼續工作下去。", japanese: "結婚してからも仕事を続けて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
-  { id: 42, chinese: "車子漸漸遠去。", japanese: "車が遠ざかって＿＿＿＿＿った。", answer: "い", category: "ていく" },
-  { id: 43, chinese: "(我)今後會越加用功。", japanese: "今後も頑張って＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
-  { id: 44, chinese: "身體會越來越強健。", japanese: "体が強くなって＿＿＿＿＿。", answer: "いく", category: "ていく" },
-  { id: 45, chinese: "我想要繼續學習日文下去。", japanese: "日本語の勉強を続けて＿＿＿＿＿うと思います。", answer: "いこ", category: "ていく" }
+  { id: 37, chineseKey: "avq37_chinese", japanese: "あの人は日本へ帰って＿＿＿＿＿ました。", answer: "いき", category: "ていく" },
+  { id: 38, chineseKey: "avq38_chinese", japanese: "一人で生きて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 39, chineseKey: "avq39_chinese", japanese: "人間は死んで＿＿＿＿＿。", answer: "いく", category: "ていく" },
+  { id: 40, chineseKey: "avq40_chinese", japanese: "天気が温まって＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 41, chineseKey: "avq41_chinese", japanese: "結婚してからも仕事を続けて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 42, chineseKey: "avq42_chinese", japanese: "車が遠ざかって＿＿＿＿＿った。", answer: "い", category: "ていく" },
+  { id: 43, chineseKey: "avq43_chinese", japanese: "今後も頑張って＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 44, chineseKey: "avq44_chinese", japanese: "体が強くなって＿＿＿＿＿。", answer: "いく", category: "ていく" },
+  { id: 45, chineseKey: "avq45_chinese", japanese: "日本語の勉強を続けて＿＿＿＿＿うと思います。", answer: "いこ", category: "ていく" }
 ];
 
 const AuxiliaryVerbQuiz: React.FC = () => {
@@ -186,12 +186,12 @@ const AuxiliaryVerbQuiz: React.FC = () => {
                   return (
                     <div key={question.id} className="p-3 bg-red-50 dark:bg-red-900/20 rounded border-l-4 border-red-500">
                       <div className="text-sm">
-                        <div className="font-medium">{question.chinese}</div>
+                        <div className="font-medium">{t(question.chineseKey)}</div>
                         <div className="text-muted-foreground mb-1">{question.japanese}</div>
                         <div className="text-red-600">{t('yourAnswer')}{userAnswer || t('notFilled')}</div>
                         <div className="text-green-600">{t('correctAnswer')}{question.answer}</div>
-                        {question.hint && question.category !== 'ていく' && (
-                          <div className="text-blue-600 text-xs mt-1">💡 {question.hint}</div>
+                        {question.hintKey && question.category !== 'ていく' && (
+                          <div className="text-blue-600 text-xs mt-1">💡 {t(question.hintKey)}</div>
                         )}
                       </div>
                     </div>
@@ -237,7 +237,7 @@ const AuxiliaryVerbQuiz: React.FC = () => {
               {currentQuestion.category}
             </div>
             <div className="text-lg font-medium mb-2">
-              {currentQuestion.chinese}
+              {t(currentQuestion.chineseKey)}
             </div>
             <div className="text-lg mb-4 font-mono">
               {currentQuestion.japanese}
@@ -252,7 +252,7 @@ const AuxiliaryVerbQuiz: React.FC = () => {
                 placeholder={t('enterAuxiliaryVerb')}
                 className="flex-1"
               />
-              {currentQuestion.hint && currentQuestion.category !== 'ていく' && (
+              {currentQuestion.hintKey && currentQuestion.category !== 'ていく' && (
                 <Button
                   variant="outline"
                   size="icon"
@@ -264,10 +264,10 @@ const AuxiliaryVerbQuiz: React.FC = () => {
               )}
             </div>
 
-            {showHints[currentQuestion.id] && currentQuestion.hint && currentQuestion.category !== 'ていく' && (
+            {showHints[currentQuestion.id] && currentQuestion.hintKey && currentQuestion.category !== 'ていく' && (
               <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded border-l-4 border-blue-500">
                 <div className="text-sm text-blue-700 dark:text-blue-300">
-                  💡 {currentQuestion.hint}
+                  💡 {t(currentQuestion.hintKey)}
                 </div>
               </div>
             )}
