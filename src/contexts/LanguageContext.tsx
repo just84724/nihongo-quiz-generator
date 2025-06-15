@@ -21,12 +21,14 @@ const translations = {
     scenarioPractice: "情境練習題",
     adjectivePractice: "形容詞變化練習",
     givingReceivingPractice: "授受動詞文法練習",
+    auxiliaryVerbPractice: "補助動詞練習",
     
     // 描述文字
     practiceDescription: "練習日文助詞的使用方法",
     modeExplanation: "選擇題有標準答案，填充題為自由練習，情境練習題為對話場景",
     adjectiveExplanation: "形容詞變化練習可以學習い形容詞和な形容詞的各種變化形式",
     givingReceivingExplanation: "授受動詞練習包含くれる、あげる、もらう的用法練習",
+    auxiliaryVerbExplanation: "補助動詞練習包含てしまう、ておく、てみる、てくる、ていく的用法練習",
     
     // 通用按鈕
     back: "返回",
@@ -100,6 +102,9 @@ const translations = {
     completedStatus: "已完成 {answered} 題，答對 {correct} 題，答錯 {incorrect} 題",
     close: "關閉",
     
+    // 補助動詞練習
+    enterAuxiliaryVerb: "請輸入補助動詞",
+    
     // 選擇題
     choiceQuizTitle: "助詞練習題（選擇題）",
     
@@ -121,12 +126,14 @@ const translations = {
     scenarioPractice: "Scenario Practice",
     adjectivePractice: "Adjective Conjugation Practice",
     givingReceivingPractice: "Giving & Receiving Verbs Practice",
+    auxiliaryVerbPractice: "Auxiliary Verb Practice",
     
     // 描述文字
     practiceDescription: "Practice using Japanese particles correctly",
     modeExplanation: "Multiple choice has standard answers, fill-in-the-blank is free practice, scenario practice features dialogue situations",
     adjectiveExplanation: "Adjective conjugation practice helps you learn various forms of i-adjectives and na-adjectives",
     givingReceivingExplanation: "Practice the usage of giving and receiving verbs: kureru, ageru, morau",
+    auxiliaryVerbExplanation: "Practice auxiliary verbs: te shimau, te oku, te miru, te kuru, te iku",
     
     // 通用按鈕
     back: "Back",

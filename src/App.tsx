@@ -11,6 +11,7 @@ import BlankQuiz from "./pages/BlankQuiz";
 import ScenarioQuiz from "./pages/ScenarioQuiz";
 import AdjectiveQuiz from "./pages/AdjectiveQuiz";
 import GivingReceivingQuiz from "./pages/GivingReceivingQuiz";
+import AuxiliaryVerbQuiz from "./pages/AuxiliaryVerbQuiz";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/scenario-quiz" element={<ScenarioQuiz />} />
             <Route path="/adjective-quiz" element={<AdjectiveQuiz />} />
             <Route path="/giving-receiving-quiz" element={<GivingReceivingQuiz />} />
+            <Route path="/auxiliary-verb-quiz" element={<AuxiliaryVerbQuiz />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
