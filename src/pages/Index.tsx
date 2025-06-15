@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Edit3, MessageSquare, FileText } from "lucide-react";
+import { BookOpen, Edit3, MessageSquare, FileText, Users } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -14,6 +14,7 @@ const Index: React.FC = () => {
   const handleBlankQuiz = () => navigate("/blank-quiz");
   const handleScenarioQuiz = () => navigate("/scenario-quiz");
   const handleAdjectiveQuiz = () => navigate("/adjective-quiz");
+  const handleGivingReceivingQuiz = () => navigate("/giving-receiving-quiz");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
@@ -63,6 +64,16 @@ const Index: React.FC = () => {
             <FileText className="mr-3 h-6 w-6" />
             {t('adjectivePractice')}
           </Button>
+
+          <Button 
+            onClick={handleGivingReceivingQuiz} 
+            variant="secondary" 
+            size="lg" 
+            className="w-full h-16 text-lg"
+          >
+            <Users className="mr-3 h-6 w-6" />
+            {t('givingReceivingPractice')}
+          </Button>
         </div>
       </div>
       
@@ -70,6 +81,7 @@ const Index: React.FC = () => {
         <p>{t('practiceDescription')}</p>
         <p className="mt-2">{t('modeExplanation')}</p>
         <p className="mt-2">{t('adjectiveExplanation')}</p>
+        <p className="mt-2">{t('givingReceivingExplanation')}</p>
       </div>
     </div>
   );

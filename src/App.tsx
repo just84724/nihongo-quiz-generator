@@ -10,6 +10,7 @@ import ChoiceQuiz from "./pages/ChoiceQuiz";
 import BlankQuiz from "./pages/BlankQuiz";
 import ScenarioQuiz from "./pages/ScenarioQuiz";
 import AdjectiveQuiz from "./pages/AdjectiveQuiz";
+import GivingReceivingQuiz from "./pages/GivingReceivingQuiz";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/blank-quiz" element={<BlankQuiz />} />
             <Route path="/scenario-quiz" element={<ScenarioQuiz />} />
             <Route path="/adjective-quiz" element={<AdjectiveQuiz />} />
+            <Route path="/giving-receiving-quiz" element={<GivingReceivingQuiz />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
