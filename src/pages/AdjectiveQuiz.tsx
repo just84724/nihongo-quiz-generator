@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,7 +123,7 @@ const AdjectiveQuiz: React.FC = () => {
   const [showAnswersDialog, setShowAnswersDialog] = useState(false);
 
   // 根據模式篩選變化形式
-  const getFormsForMode = React.useCallback((mode: string | null) => {
+  const getFormsForMode = (mode: string | null) => {
     if (!mode) return { i: iAdjectiveForms, na: naAdjectiveForms };
     
     const iForm = iAdjectiveForms.find(form => form.key === mode);
@@ -134,10 +133,10 @@ const AdjectiveQuiz: React.FC = () => {
       i: iForm ? [iForm] : [],
       na: naForm ? [naForm] : []
     };
-  }, []);
+  };
 
   // 生成練習題
-  const generateQuestions = React.useCallback((currentMode: string | null) => {
+  const generateQuestions = (currentMode: string | null) => {
     const allQuestions: Question[] = [];
     let id = 1;
     const forms = getFormsForMode(currentMode);
@@ -214,7 +213,7 @@ const AdjectiveQuiz: React.FC = () => {
     });
 
     return allQuestions.sort(() => Math.random() - 0.5);
-  }, [getFormsForMode]);
+  };
 
   // 如果沒有選擇模式，顯示選擇頁面
   if (!mode) {
@@ -290,12 +289,13 @@ const AdjectiveQuiz: React.FC = () => {
     );
   }
 
-  // 生成練習題 - Fixed useEffect dependencies
+  // 生成練習題
   useEffect(() => {
     if (mode) {
+      console.log('Generating questions for mode:', mode);
       setQuestions(generateQuestions(mode));
     }
-  }, [mode, generateQuestions]);
+  }, [mode]); // 只依賴mode
 
   const currentQuestion = questions[currentIndex];
 
