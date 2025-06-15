@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plane, Home, ShoppingBag, Camera, Coffee, Globe } from "lucide-react";
@@ -14,6 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
 
 // 情境題型別定義
 type ScenarioQuestion = {
@@ -240,7 +240,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "B：好啊，你想吃什麽？",
       "いいですよ。なにを食べたいの？",
       "A：吃壽司吧？",
-      "お壽司にしようか？",
+      "お寿司にしようか？",
       "B：不要，昨天剛吃過呢。要不我們吃牛排吧？",
       "昨日食べたばっかりなのに。。やっぱりステーキにしよう。",
       "A：好啊。",
@@ -276,7 +276,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
       "A：這個假期你都到哪里去玩了啊？",
       "夏休みの間にどこで遊んでいたの？",
       "B：去北京旅遊了一趟。好熱啊。後來就一直呆在家里看電視，上網。你呢？",
-      "北京へ旅行に行って、気溫があまり暑いなので、帰った來たらずっと家でテレビを見たりパソコンで遊んだりしていた。あなたは？",
+      "北京へ旅行に行って、気温があまり暑いなので、帰った來たらずっと家でテレビを見たりパソコンで遊んだりしていた。あなたは？",
       "A：我哪里都沒去呢。平常就一個人在家。偶爾周末和爸媽去公園玩。",
       "どこも行かなかった。普段（ふだん）の日、一人でのんびりして、たまに周末になると、両親と公園で散歩（さんぽ）していた。",
       "B：聽起來也不錯啦。",
@@ -297,7 +297,15 @@ const ScenarioQuiz: React.FC = () => {
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
-  const [showAnswers, setShowAnswers] = useState(false);
+  
+  const [userAnswers, setUserAnswers] = useState<Record<number, Record<number, string>>>({});
+  const [incorrectAnswers, setIncorrectAnswers] = useState<Array<{
+    scenarioTitle: string;
+    dialogueLine: string;
+    userAnswer: string;
+    correctAnswer: string;
+  }>>([]);
+  const [resultsView, setResultsView] = useState<'none' | 'incorrect' | 'all'>('none');
 
   // 隨機排列題目
   useEffect(() => {
@@ -307,12 +315,51 @@ const ScenarioQuiz: React.FC = () => {
 
   const current = randomizedQuestions[step];
 
+  const handleAnswerChange = (questionIndex: number, lineIndex: number, value: string) => {
+    setUserAnswers(prev => ({
+      ...prev,
+      [questionIndex]: {
+        ...(prev[questionIndex] || {}),
+        [lineIndex]: value,
+      },
+    }));
+  };
+
+  const calculateResults = () => {
+    const incorrects: typeof incorrectAnswers = [];
+    randomizedQuestions.forEach((question, questionIndex) => {
+      const correctJpAnswers = question.answer.filter((_, i) => i % 2 !== 0);
+      const userJpAnswers = userAnswers[questionIndex] || {};
+
+      question.dialogue.forEach((dialogueLine, lineIndex) => {
+        const userAnswer = userJpAnswers[lineIndex] || '';
+        const correctAnswer = correctJpAnswers[lineIndex];
+
+        const normalize = (str: string | undefined): string => {
+          if (!str) return '';
+          return str.replace(/（.*?）/g, '').replace(/[・\s　]/g, '');
+        };
+
+        if (normalize(userAnswer) !== normalize(correctAnswer)) {
+          incorrects.push({
+            scenarioTitle: question.title,
+            dialogueLine: dialogueLine,
+            userAnswer: userAnswer,
+            correctAnswer: correctAnswer,
+          });
+        }
+      });
+    });
+    setIncorrectAnswers(incorrects);
+  };
+
   const handleStart = () => setStarted(true);
   
   const handleNext = () => {
     if (step < randomizedQuestions.length - 1) {
       setStep(step + 1);
     } else {
+      calculateResults();
       setFinished(true);
     }
   };
@@ -330,7 +377,9 @@ const ScenarioQuiz: React.FC = () => {
     setStarted(false);
     setFinished(false);
     setShowExitDialog(false);
-    setShowAnswers(false);
+    setResultsView('none');
+    setUserAnswers({});
+    setIncorrectAnswers([]);
   };
 
   const handleBack = () => navigate("/");
@@ -341,15 +390,12 @@ const ScenarioQuiz: React.FC = () => {
     setStep(0);
   };
 
-  const handleShowAnswers = () => setShowAnswers(true);
-  const handleHideAnswers = () => setShowAnswers(false);
-
   if (!current && !finished && started) {
     return <div>載入中...</div>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-8">
       <div className="max-w-4xl w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
         <div className="flex items-center mb-4">
           <Button variant="ghost" size="sm" onClick={handleBack} className="mr-2">
@@ -421,10 +467,16 @@ const ScenarioQuiz: React.FC = () => {
                 <h2 className="text-xl font-semibold">{current.title}</h2>
               </div>
               
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4">
                 {current.dialogue.map((line, index) => (
-                  <div key={index} className="mb-3 last:mb-0">
-                    <p className="text-base leading-relaxed">{line}</p>
+                  <div key={index}>
+                    <p className="text-base leading-relaxed mb-2">{line}</p>
+                    <Input
+                      placeholder="請輸入日文翻譯"
+                      value={userAnswers[step]?.[index] || ''}
+                      onChange={(e) => handleAnswerChange(step, index, e.target.value)}
+                      className="text-base"
+                    />
                   </div>
                 ))}
               </div>
@@ -444,16 +496,25 @@ const ScenarioQuiz: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center text-center">
             <div className="text-2xl font-bold mb-4">練習完成！</div>
-            <div className="text-lg mb-6 text-center">
+            <div className="text-lg mb-6">
               <p>恭喜您完成了所有 {randomizedQuestions.length} 個情境練習！</p>
-              <p>希望這些對話場景對您的日文學習有幫助。</p>
+              {incorrectAnswers.length > 0 ? (
+                <p className="text-destructive mt-2">您有 {incorrectAnswers.length} 處回答錯誤。</p>
+              ) : (
+                <p className="text-green-600 mt-2">太棒了，全部答對！</p>
+              )}
             </div>
             
-            {!showAnswers ? (
-              <div className="space-y-2 w-full">
-                <Button onClick={handleShowAnswers} variant="default" className="w-full">
+            {resultsView === 'none' ? (
+              <div className="space-y-2 w-full max-w-sm">
+                {incorrectAnswers.length > 0 && (
+                  <Button onClick={() => setResultsView('incorrect')} variant="destructive" className="w-full">
+                    查看錯誤答案
+                  </Button>
+                )}
+                <Button onClick={() => setResultsView('all')} variant="default" className="w-full">
                   查看所有答案
                 </Button>
                 <Button onClick={handleRestart} variant="outline" className="w-full">
@@ -464,33 +525,50 @@ const ScenarioQuiz: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="w-full">
+              <div className="w-full text-left">
                 <div className="mb-4 flex justify-between items-center">
-                  <h2 className="text-xl font-bold">所有場景答案</h2>
-                  <Button onClick={handleHideAnswers} variant="outline" size="sm">
-                    隱藏答案
+                  <h2 className="text-xl font-bold">
+                    {resultsView === 'incorrect' ? '錯誤答案列表' : '所有場景答案'}
+                  </h2>
+                  <Button onClick={() => setResultsView('none')} variant="outline" size="sm">
+                    隱藏
                   </Button>
                 </div>
                 
-                <div className="space-y-6 mb-6 max-h-96 overflow-y-auto">
-                  {randomizedQuestions.map((scenario, index) => (
-                    <div key={scenario.id} className="border rounded-lg p-4">
-                      <div className="flex items-center mb-3">
-                        <scenario.icon className="h-5 w-5 mr-2" />
-                        <h3 className="font-semibold">{scenario.title}</h3>
+                <div className="space-y-6 mb-6 max-h-96 overflow-y-auto p-1">
+                  {resultsView === 'incorrect' ? (
+                    incorrectAnswers.map((item, index) => (
+                      <div key={index} className="border rounded-lg p-4 bg-destructive/5">
+                        <p className="font-semibold text-sm text-muted-foreground">{item.scenarioTitle}</p>
+                        <p className="mt-2 text-base">{item.dialogueLine}</p>
+                        <p className="text-destructive mt-1">
+                          <span className="font-medium">你的答案：</span>{item.userAnswer || '（未填寫）'}
+                        </p>
+                        <p className="text-green-600 dark:text-green-500">
+                          <span className="font-medium">正確答案：</span>{item.correctAnswer}
+                        </p>
                       </div>
-                      <div className="bg-gray-50 dark:bg-gray-800 rounded p-4">
-                        {scenario.answer.map((line, lineIndex) => (
-                          <div key={lineIndex} className="mb-2 last:mb-0">
-                            <p className="text-sm leading-relaxed">{line}</p>
-                          </div>
-                        ))}
+                    ))
+                  ) : (
+                    randomizedQuestions.map((scenario) => (
+                      <div key={scenario.id} className="border rounded-lg p-4">
+                        <div className="flex items-center mb-3">
+                          <scenario.icon className="h-5 w-5 mr-2" />
+                          <h3 className="font-semibold">{scenario.title}</h3>
+                        </div>
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded p-4 space-y-2">
+                          {scenario.answer.map((line, lineIndex) => (
+                            <p key={lineIndex} className={`text-sm leading-relaxed ${lineIndex % 2 !== 0 ? 'text-blue-600 dark:text-blue-400 font-medium' : ''}`}>
+                              {line}
+                            </p>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-2 max-w-sm mx-auto">
                   <Button onClick={handleRestart} variant="outline" className="w-full">
                     重新練習
                   </Button>
