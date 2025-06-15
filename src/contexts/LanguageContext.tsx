@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Language = 'zh' | 'en';
@@ -66,7 +67,6 @@ const translations = {
     yourAnswer: "你的答案：",
     correctAnswer: "正確答案：",
     notFilled: "（未填寫）",
-    enterJapaneseTranslation: "請輸入日文翻譯",
     nextScenario: "下一個場景",
     previousScenario: "上一個場景",
     finishPractice: "完成練習",
@@ -177,7 +177,6 @@ const translations = {
     yourAnswer: "Your answer: ",
     correctAnswer: "Correct answer: ",
     notFilled: "(Not filled)",
-    enterJapaneseTranslation: "Enter Japanese translation",
     nextScenario: "Next Scenario",
     previousScenario: "Previous Scenario",
     finishPractice: "Finish Practice",
@@ -273,7 +272,47 @@ const translations = {
       "(Announcement: Passengers on flight AC087, the plane is about to take off, please go to gate 17 to prepare for boarding.)",
       "A: The boring days are about to start again.",
       "B: Sigh, yeah, really looking forward to the next vacation."
-    ]
+    ],
+    
+    // 形容詞練習
+    selectPracticeMode: "Select Practice Mode",
+    negativeForm: "Negative Form Practice (kunai / de nai)",
+    negativePastForm: "Negative Past Form Practice (kunakatta / de nakatta)",
+    conjunctiveForm: "Conjunctive Form Practice (kute / de)",
+    conditionalForm: "Conditional Form Practice (kereba / nara)",
+    presumptiveForm: "Presumptive Form Practice (karou / darou)",
+    pastForm: "Past Form Practice (katta / datta)",
+    adverbForm: "Adverb Form Practice (ku / ni)",
+    enterConjugatedAdjective: "Enter conjugated adjective",
+    iAdjective: "i-adjective",
+    naAdjective: "na-adjective",
+    enterChangedForm: "Enter the changed form: {base} → ?",
+    practiceCompleted: "Practice Completed!",
+    totalQuestions: "Total Questions:",
+    correct: "Correct:",
+    incorrect: "Incorrect:",
+    accuracy: "Accuracy:",
+    incorrectQuestions: "Incorrect Questions:",
+    practiceAgain: "Practice Again",
+    exitQuestion: "Do you want to exit?",
+    exitMessage: "After exiting, your current answers and correct answers will be displayed.",
+    continueAnswering: "Continue Answering",
+    exitNow: "Exit Now",
+    previousAnswersTitle: "Your Previous Questions and Answers",
+    completedStatus: "Completed {answered} questions, {correct} correct, {incorrect} incorrect",
+    close: "Close",
+    
+    // 補助動詞練習
+    enterAuxiliaryVerb: "Enter auxiliary verb",
+    
+    // 選擇題
+    choiceQuizTitle: "Particle Practice (Multiple Choice)",
+    
+    // 填充題
+    fillBlankQuizTitle: "Particle Practice (Fill in the Blank)",
+    
+    // 404頁面
+    pageNotFound: "Page Not Found"
   }
 };
 
