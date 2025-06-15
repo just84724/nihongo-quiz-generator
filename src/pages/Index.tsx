@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Edit3, MessageSquare } from "lucide-react";
+import { BookOpen, Edit3, MessageSquare, FileText } from "lucide-react";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +10,7 @@ const Index: React.FC = () => {
   const handleChoiceQuiz = () => navigate("/choice-quiz");
   const handleBlankQuiz = () => navigate("/blank-quiz");
   const handleScenarioQuiz = () => navigate("/scenario-quiz");
+  const handleAdjectiveQuiz = () => navigate("/adjective-quiz");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
@@ -47,12 +48,23 @@ const Index: React.FC = () => {
             <MessageSquare className="mr-3 h-6 w-6" />
             情境練習題
           </Button>
+
+          <Button 
+            onClick={handleAdjectiveQuiz} 
+            variant="outline" 
+            size="lg" 
+            className="w-full h-16 text-lg"
+          >
+            <FileText className="mr-3 h-6 w-6" />
+            形容詞變化練習
+          </Button>
         </div>
       </div>
       
       <div className="mt-6 text-sm text-muted-foreground text-center">
         <p>練習日文助詞的使用方法</p>
         <p>選擇題有標準答案，填充題為自由練習，情境練習題為對話場景</p>
+        <p>形容詞變化練習可以學習い形容詞和な形容詞的各種變化形式</p>
       </div>
     </div>
   );
