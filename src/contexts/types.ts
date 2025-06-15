@@ -8,5 +8,5 @@ export interface LanguageContextType {
 }
 
 export interface Translations {
-  [key: string]: string;
+  [key: string]: string | string[];
 }

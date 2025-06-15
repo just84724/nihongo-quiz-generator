@@ -10,7 +10,14 @@ const translations: Record<Language, Translations> = {
 
 export const createTranslationFunction = (language: Language) => {
   return (key: string, params?: Record<string, string | number>): string => {
-    let text = translations[language][key] || key;
+    const translation = translations[language][key];
+    
+    // If it's an array, return the key (arrays are handled differently in components)
+    if (Array.isArray(translation)) {
+      return key;
+    }
+    
+    let text = translation || key;
     
     // Replace parameters in the text
     if (params) {
