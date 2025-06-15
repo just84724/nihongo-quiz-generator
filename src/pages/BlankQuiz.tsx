@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,7 +50,7 @@ const blankQuestions: BlankQuestion[] = [
   { id: 9, question: "毎日7時（＿）おきます", correctAnswers: ["に"] },
   { id: 10, question: "私は車（＿）ありません", correctAnswers: ["が"] },
   { id: 11, question: "毎日コーヒー（＿）飲みます", correctAnswers: ["を"] },
-  { id: 12, question: "昨日レストラン（＿）晩ご飯を食べました", correctAnswers: ["で"] },
+  { id: 12, question: "昨日レストラン（＿）晚ご飯を食べました", correctAnswers: ["で"] },
   { id: 13, question: "休みに どこ（＿）行きますか", correctAnswers: ["へ"] },
   { id: 14, question: "仕事は午前9時から午後6時（＿）です", correctAnswers: ["まで"] },
   { id: 15, question: "私は今学校（＿）います", correctAnswers: ["に"] },
@@ -71,7 +70,6 @@ const BlankQuizComponent: React.FC = () => {
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showAnswersDialog, setShowAnswersDialog] = useState(false);
-  const [inputError, setInputError] = useState("");
 
   // 隨機排列題目
   useEffect(() => {
@@ -81,20 +79,19 @@ const BlankQuizComponent: React.FC = () => {
 
   const current = randomizedQuestions[step];
 
-  // 檢查是否為日文字符
-  const isJapanese = (text: string) => {
-    const japaneseRegex = /^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]*$/;
-    return japaneseRegex.test(text);
+  // 計算該題目需要的字符數量（根據底線數量）
+  const getExpectedInputLength = (question: string) => {
+    const underscoreCount = (question.match(/（＿）/g) || []).length;
+    return underscoreCount;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
+    const expectedLength = getExpectedInputLength(current?.question || "");
     
-    if (inputValue === "" || isJapanese(inputValue)) {
+    // 限制輸入長度不超過預期的字符數
+    if (inputValue.length <= expectedLength) {
       setValue(inputValue);
-      setInputError("");
-    } else {
-      setInputError("請只輸入日文字符");
     }
   };
   
@@ -102,8 +99,6 @@ const BlankQuizComponent: React.FC = () => {
     e.preventDefault();
     
     if (!current) return;
-    
-    if (inputError) return;
 
     // 檢查答案是否正確
     const isCorrect = current.correctAnswers.some(answer => 
@@ -135,7 +130,6 @@ const BlankQuizComponent: React.FC = () => {
     setValue("");
     setFinished(false);
     setUserAnswers([]);
-    setInputError("");
   };
 
   const handleBack = () => navigate("/");
@@ -196,16 +190,13 @@ const BlankQuizComponent: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <div className="text-xl font-medium mb-4 text-center">{current.question}</div>
                 <Input
-                  placeholder="請輸入助詞（只能輸入日文）"
-                  className={`mb-2 ${inputError ? 'border-red-500' : ''}`}
+                  placeholder={`請輸入助詞（${getExpectedInputLength(current.question)}個字符）`}
+                  className="mb-4"
                   value={value}
                   onChange={handleChange}
                   autoFocus
                 />
-                {inputError && (
-                  <p className="text-red-500 text-sm mb-4">{inputError}</p>
-                )}
-                <Button type="submit" disabled={value === "" || inputError !== ""} className="w-full">
+                <Button type="submit" disabled={value === ""} className="w-full">
                   {step === randomizedQuestions.length - 1 ? "完成" : "下一題"}
                 </Button>
               </form>
