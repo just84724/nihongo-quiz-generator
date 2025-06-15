@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,7 +124,7 @@ const AdjectiveQuiz: React.FC = () => {
   const [showAnswersDialog, setShowAnswersDialog] = useState(false);
 
   // 根據模式篩選變化形式
-  const getFormsForMode = (mode: string | null) => {
+  const getFormsForMode = React.useCallback((mode: string | null) => {
     if (!mode) return { i: iAdjectiveForms, na: naAdjectiveForms };
     
     const iForm = iAdjectiveForms.find(form => form.key === mode);
@@ -133,7 +134,87 @@ const AdjectiveQuiz: React.FC = () => {
       i: iForm ? [iForm] : [],
       na: naForm ? [naForm] : []
     };
-  };
+  }, []);
+
+  // 生成練習題
+  const generateQuestions = React.useCallback((currentMode: string | null) => {
+    const allQuestions: Question[] = [];
+    let id = 1;
+    const forms = getFormsForMode(currentMode);
+
+    // 生成い形容詞題目
+    const shuffledIAdjectives = [...iAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
+    shuffledIAdjectives.forEach(adj => {
+      if (forms.i.length === 0) return;
+      
+      const randomForm = forms.i[Math.floor(Math.random() * forms.i.length)];
+      const baseWord = adj.word.split('／')[0];
+      let correctAnswer = "";
+      
+      if (baseWord === "いい" && randomForm.name !== "否定法" && randomForm.name !== "否定形（過去）") {
+        switch (randomForm.name) {
+          case "副詞法": correctAnswer = "よく"; break;
+          case "中止法": correctAnswer = "よくて"; break;
+          case "過去法": correctAnswer = "よかった"; break;
+          case "仮定形": correctAnswer = "よければ"; break;
+          case "推量法": correctAnswer = "よかろう"; break;
+          default: correctAnswer = "よ" + randomForm.pattern;
+        }
+      } else if (baseWord === "いい" && (randomForm.name === "否定法" || randomForm.name === "否定形（過去）")) {
+        if (randomForm.name === "否定法") {
+          correctAnswer = "よくない";
+        } else if (randomForm.name === "否定形（過去）") {
+          correctAnswer = "よくなかった";
+        }
+      } else {
+        const stem = baseWord.slice(0, -1);
+        correctAnswer = stem + randomForm.pattern;
+      }
+
+      allQuestions.push({
+        id: id++,
+        type: 'i',
+        baseForm: baseWord,
+        meaning: adj.meaning,
+        formName: randomForm.name,
+        pattern: randomForm.pattern,
+        correctAnswer
+      });
+    });
+
+    // 生成な形容詞題目
+    const shuffledNaAdjectives = [...naAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
+    shuffledNaAdjectives.forEach(adj => {
+      if (forms.na.length === 0) return;
+      
+      const randomForm = forms.na[Math.floor(Math.random() * forms.na.length)];
+      const baseWord = adj.word.split('／')[0].replace('な', '');
+      let correctAnswer = "";
+
+      switch (randomForm.name) {
+        case "否定法": correctAnswer = baseWord + "でない"; break;
+        case "否定形（過去）": correctAnswer = baseWord + "でなかった"; break;
+        case "副詞法": correctAnswer = baseWord + "に"; break;
+        case "中止法": correctAnswer = baseWord + "で"; break;
+        case "過去法": correctAnswer = baseWord + "だった"; break;
+        case "仮定形": correctAnswer = baseWord + "なら"; break;
+        case "推量法": correctAnswer = baseWord + "だろう"; break;
+        default: correctAnswer = baseWord + randomForm.pattern;
+      }
+
+      allQuestions.push({
+        id: id++,
+        type: 'na',
+        baseForm: baseWord,
+        meaning: adj.meaning,
+        formName: randomForm.name,
+        pattern: randomForm.pattern,
+        correctAnswer
+      });
+    });
+
+    return allQuestions.sort(() => Math.random() - 0.5);
+  }, [getFormsForMode]);
 
   // 如果沒有選擇模式，顯示選擇頁面
   if (!mode) {
@@ -209,91 +290,12 @@ const AdjectiveQuiz: React.FC = () => {
     );
   }
 
-  // 生成練習題
+  // 生成練習題 - Fixed useEffect dependencies
   useEffect(() => {
-    const generateQuestions = () => {
-      const allQuestions: Question[] = [];
-      let id = 1;
-      const forms = getFormsForMode(mode);
-
-      // 生成い形容詞題目
-      const shuffledIAdjectives = [...iAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
-      shuffledIAdjectives.forEach(adj => {
-        if (forms.i.length === 0) return;
-        
-        const randomForm = forms.i[Math.floor(Math.random() * forms.i.length)];
-        const baseWord = adj.word.split('／')[0];
-        let correctAnswer = "";
-        
-        if (baseWord === "いい" && randomForm.name !== "否定法" && randomForm.name !== "否定形（過去）") {
-          const yoiBase = "よ";
-          switch (randomForm.name) {
-            case "副詞法": correctAnswer = "よく"; break;
-            case "中止法": correctAnswer = "よくて"; break;
-            case "過去法": correctAnswer = "よかった"; break;
-            case "仮定形": correctAnswer = "よければ"; break;
-            case "推量法": correctAnswer = "よかろう"; break;
-            default: correctAnswer = yoiBase + randomForm.pattern;
-          }
-        } else if (baseWord === "いい" && (randomForm.name === "否定法" || randomForm.name === "否定形（過去）")) {
-          // いい的否定形特殊處理
-          if (randomForm.name === "否定法") {
-            correctAnswer = "よくない";
-          } else if (randomForm.name === "否定形（過去）") {
-            correctAnswer = "よくなかった";
-          }
-        } else {
-          const stem = baseWord.slice(0, -1);
-          correctAnswer = stem + randomForm.pattern;
-        }
-
-        allQuestions.push({
-          id: id++,
-          type: 'i',
-          baseForm: baseWord,
-          meaning: adj.meaning,
-          formName: randomForm.name,
-          pattern: randomForm.pattern,
-          correctAnswer
-        });
-      });
-
-      // 生成な形容詞題目
-      const shuffledNaAdjectives = [...naAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
-      shuffledNaAdjectives.forEach(adj => {
-        if (forms.na.length === 0) return;
-        
-        const randomForm = forms.na[Math.floor(Math.random() * forms.na.length)];
-        const baseWord = adj.word.split('／')[0].replace('な', '');
-        let correctAnswer = "";
-
-        switch (randomForm.name) {
-          case "否定法": correctAnswer = baseWord + "でない"; break;
-          case "否定形（過去）": correctAnswer = baseWord + "でなかった"; break;
-          case "副詞法": correctAnswer = baseWord + "に"; break;
-          case "中止法": correctAnswer = baseWord + "で"; break;
-          case "過去法": correctAnswer = baseWord + "だった"; break;
-          case "仮定形": correctAnswer = baseWord + "なら"; break;
-          case "推量法": correctAnswer = baseWord + "だろう"; break;
-          default: correctAnswer = baseWord + randomForm.pattern;
-        }
-
-        allQuestions.push({
-          id: id++,
-          type: 'na',
-          baseForm: baseWord,
-          meaning: adj.meaning,
-          formName: randomForm.name,
-          pattern: randomForm.pattern,
-          correctAnswer
-        });
-      });
-
-      return allQuestions.sort(() => Math.random() - 0.5);
-    };
-
-    setQuestions(generateQuestions());
-  }, [mode]);
+    if (mode) {
+      setQuestions(generateQuestions(mode));
+    }
+  }, [mode, generateQuestions]);
 
   const currentQuestion = questions[currentIndex];
 
@@ -327,8 +329,9 @@ const AdjectiveQuiz: React.FC = () => {
     setUserInput("");
     setUserAnswers([]);
     setFinished(false);
-    // 重新生成題目
-    window.location.reload();
+    if (mode) {
+      setQuestions(generateQuestions(mode));
+    }
   };
 
   const handleBack = () => navigate("/adjective-quiz");
