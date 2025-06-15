@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -72,23 +72,23 @@ const naAdjectiveData = [
 
 // 變化形式
 const iAdjectiveForms = [
-  { name: "否定法", pattern: "くない", example: "おおきくない" },
-  { name: "否定形（過去）", pattern: "くなかった", example: "おおきくなかった" },
-  { name: "副詞法", pattern: "く", example: "おおきく" },
-  { name: "中止法", pattern: "くて", example: "おおきくて" },
-  { name: "過去法", pattern: "かった", example: "おおきかった" },
-  { name: "仮定形", pattern: "ければ", example: "おおきければ" },
-  { name: "推量法", pattern: "かろう", example: "おおきかろう" }
+  { name: "否定法", pattern: "くない", example: "おおきくない", key: "negative" },
+  { name: "否定形（過去）", pattern: "くなかった", example: "おおきくなかった", key: "negative-past" },
+  { name: "副詞法", pattern: "く", example: "おおきく", key: "adverb" },
+  { name: "中止法", pattern: "くて", example: "おおきくて", key: "conjunctive" },
+  { name: "過去法", pattern: "かった", example: "おおきかった", key: "past" },
+  { name: "仮定形", pattern: "ければ", example: "おおきければ", key: "conditional" },
+  { name: "推量法", pattern: "かろう", example: "おおきかろう", key: "presumptive" }
 ];
 
 const naAdjectiveForms = [
-  { name: "否定法", pattern: "でない", example: "ゆうめいでない" },
-  { name: "否定形（過去）", pattern: "でなかった", example: "ゆうめいでなかった" },
-  { name: "副詞法", pattern: "に", example: "ゆうめいに" },
-  { name: "中止法", pattern: "で", example: "ゆうめいで" },
-  { name: "過去法", pattern: "だった", example: "ゆうめいだった" },
-  { name: "仮定形", pattern: "なら(ば)", example: "ゆうめいなら" },
-  { name: "推量法", pattern: "だろう", example: "ゆうめいだろう" }
+  { name: "否定法", pattern: "でない", example: "ゆうめいでない", key: "negative" },
+  { name: "否定形（過去）", pattern: "でなかった", example: "ゆうめいでなかった", key: "negative-past" },
+  { name: "副詞法", pattern: "に", example: "ゆうめいに", key: "adverb" },
+  { name: "中止法", pattern: "で", example: "ゆうめいで", key: "conjunctive" },
+  { name: "過去法", pattern: "だった", example: "ゆうめいだった", key: "past" },
+  { name: "仮定形", pattern: "なら(ば)", example: "ゆうめいなら", key: "conditional" },
+  { name: "推量法", pattern: "だろう", example: "ゆうめいだろう", key: "presumptive" }
 ];
 
 type Question = {
@@ -111,6 +111,9 @@ type UserAnswer = {
 
 const AdjectiveQuiz: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get('mode');
+  
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
@@ -119,16 +122,106 @@ const AdjectiveQuiz: React.FC = () => {
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showAnswersDialog, setShowAnswersDialog] = useState(false);
 
+  // 根據模式篩選變化形式
+  const getFormsForMode = (mode: string | null) => {
+    if (!mode) return { i: iAdjectiveForms, na: naAdjectiveForms };
+    
+    const iForm = iAdjectiveForms.find(form => form.key === mode);
+    const naForm = naAdjectiveForms.find(form => form.key === mode);
+    
+    return {
+      i: iForm ? [iForm] : [],
+      na: naForm ? [naForm] : []
+    };
+  };
+
+  // 如果沒有選擇模式，顯示選擇頁面
+  if (!mode) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+        <div className="max-w-lg w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
+          <div className="flex items-center mb-6">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="mr-2">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-2xl font-bold">選擇練習模式</h1>
+          </div>
+          
+          <div className="space-y-3">
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=negative")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              否定形練習（くない / でない）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=negative-past")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              否定形（過去）練習（くなかった / でなかった）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=conjunctive")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              中止形練習（くて / で）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=conditional")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              仮定形練習（ければ / なら）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=presumptive")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              推量法練習（かろう / だろう）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=past")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              過去法練習（かった / だった）
+            </Button>
+            
+            <Button 
+              onClick={() => navigate("/adjective-quiz?mode=adverb")} 
+              variant="outline" 
+              className="w-full h-12 text-left justify-start"
+            >
+              副詞法練習（く / に）
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 生成練習題
   useEffect(() => {
     const generateQuestions = () => {
       const allQuestions: Question[] = [];
       let id = 1;
+      const forms = getFormsForMode(mode);
 
       // 生成い形容詞題目
       const shuffledIAdjectives = [...iAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
       shuffledIAdjectives.forEach(adj => {
-        const randomForm = iAdjectiveForms[Math.floor(Math.random() * iAdjectiveForms.length)];
+        if (forms.i.length === 0) return;
+        
+        const randomForm = forms.i[Math.floor(Math.random() * forms.i.length)];
         const baseWord = adj.word.split('／')[0];
         let correctAnswer = "";
         
@@ -168,7 +261,9 @@ const AdjectiveQuiz: React.FC = () => {
       // 生成な形容詞題目
       const shuffledNaAdjectives = [...naAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
       shuffledNaAdjectives.forEach(adj => {
-        const randomForm = naAdjectiveForms[Math.floor(Math.random() * naAdjectiveForms.length)];
+        if (forms.na.length === 0) return;
+        
+        const randomForm = forms.na[Math.floor(Math.random() * forms.na.length)];
         const baseWord = adj.word.split('／')[0].replace('な', '');
         let correctAnswer = "";
 
@@ -198,7 +293,7 @@ const AdjectiveQuiz: React.FC = () => {
     };
 
     setQuestions(generateQuestions());
-  }, []);
+  }, [mode]);
 
   const currentQuestion = questions[currentIndex];
 
@@ -236,7 +331,7 @@ const AdjectiveQuiz: React.FC = () => {
     window.location.reload();
   };
 
-  const handleBack = () => navigate("/");
+  const handleBack = () => navigate("/adjective-quiz");
 
   const handleExit = () => {
     setShowExitDialog(false);
@@ -250,6 +345,19 @@ const AdjectiveQuiz: React.FC = () => {
     return <div>載入中...</div>;
   }
 
+  const getModeName = (mode: string) => {
+    const modeNames: { [key: string]: string } = {
+      'negative': '否定形',
+      'negative-past': '否定形（過去）',
+      'conjunctive': '中止形',
+      'conditional': '仮定形',
+      'presumptive': '推量法',
+      'past': '過去法',
+      'adverb': '副詞法'
+    };
+    return modeNames[mode] || '形容詞變化';
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
       <div className="max-w-lg w-full bg-white dark:bg-card text-foreground shadow-lg rounded-lg p-8">
@@ -258,7 +366,7 @@ const AdjectiveQuiz: React.FC = () => {
             <Button variant="ghost" size="sm" onClick={handleBack} className="mr-2">
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-2xl font-bold">形容詞變化練習</h1>
+            <h1 className="text-2xl font-bold">{getModeName(mode)}練習</h1>
           </div>
           
           {!finished && (
