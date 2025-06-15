@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, X } from "lucide-react";
@@ -114,7 +114,6 @@ const AdjectiveQuiz: React.FC = () => {
   const [searchParams] = useSearchParams();
   const mode = searchParams.get('mode');
   
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -122,24 +121,26 @@ const AdjectiveQuiz: React.FC = () => {
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showAnswersDialog, setShowAnswersDialog] = useState(false);
 
-  // 根據模式篩選變化形式
-  const getFormsForMode = (mode: string | null) => {
-    if (!mode) return { i: iAdjectiveForms, na: naAdjectiveForms };
+  // 使用 useMemo 來生成穩定的問題列表
+  const questions = useMemo(() => {
+    if (!mode) return [];
     
-    const iForm = iAdjectiveForms.find(form => form.key === mode);
-    const naForm = naAdjectiveForms.find(form => form.key === mode);
+    console.log('Generating questions for mode:', mode);
     
-    return {
-      i: iForm ? [iForm] : [],
-      na: naForm ? [naForm] : []
+    // 根據模式篩選變化形式
+    const getFormsForMode = (currentMode: string) => {
+      const iForm = iAdjectiveForms.find(form => form.key === currentMode);
+      const naForm = naAdjectiveForms.find(form => form.key === currentMode);
+      
+      return {
+        i: iForm ? [iForm] : [],
+        na: naForm ? [naForm] : []
+      };
     };
-  };
 
-  // 生成練習題
-  const generateQuestions = (currentMode: string | null) => {
     const allQuestions: Question[] = [];
     let id = 1;
-    const forms = getFormsForMode(currentMode);
+    const forms = getFormsForMode(mode);
 
     // 生成い形容詞題目
     const shuffledIAdjectives = [...iAdjectiveData].sort(() => Math.random() - 0.5).slice(0, 15);
@@ -213,9 +214,8 @@ const AdjectiveQuiz: React.FC = () => {
     });
 
     return allQuestions.sort(() => Math.random() - 0.5);
-  };
+  }, [mode]); // 只依賴 mode
 
-  // 如果沒有選擇模式，顯示選擇頁面
   if (!mode) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
@@ -289,14 +289,6 @@ const AdjectiveQuiz: React.FC = () => {
     );
   }
 
-  // 生成練習題
-  useEffect(() => {
-    if (mode) {
-      console.log('Generating questions for mode:', mode);
-      setQuestions(generateQuestions(mode));
-    }
-  }, [mode]); // 只依賴mode
-
   const currentQuestion = questions[currentIndex];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -329,9 +321,7 @@ const AdjectiveQuiz: React.FC = () => {
     setUserInput("");
     setUserAnswers([]);
     setFinished(false);
-    if (mode) {
-      setQuestions(generateQuestions(mode));
-    }
+    // 問題會自動重新生成，因為 useMemo 會在 mode 改變時重新計算
   };
 
   const handleBack = () => navigate("/adjective-quiz");
