@@ -2,13 +2,14 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Edit3 } from "lucide-react";
+import { BookOpen, Edit3, MessageSquare } from "lucide-react";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
 
   const handleChoiceQuiz = () => navigate("/choice-quiz");
   const handleBlankQuiz = () => navigate("/blank-quiz");
+  const handleScenarioQuiz = () => navigate("/scenario-quiz");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
@@ -36,12 +37,22 @@ const Index: React.FC = () => {
             <Edit3 className="mr-3 h-6 w-6" />
             助詞練習題（填充題）
           </Button>
+
+          <Button 
+            onClick={handleScenarioQuiz} 
+            variant="secondary" 
+            size="lg" 
+            className="w-full h-16 text-lg"
+          >
+            <MessageSquare className="mr-3 h-6 w-6" />
+            情境練習題
+          </Button>
         </div>
       </div>
       
       <div className="mt-6 text-sm text-muted-foreground text-center">
         <p>練習日文助詞的使用方法</p>
-        <p>選擇題有標準答案，填充題為自由練習</p>
+        <p>選擇題有標準答案，填充題為自由練習，情境練習題為對話場景</p>
       </div>
     </div>
   );
