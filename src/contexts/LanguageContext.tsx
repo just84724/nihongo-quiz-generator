@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Language = 'zh' | 'en';
@@ -6,7 +5,7 @@ export type Language = 'zh' | 'en';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
 }
 
 const translations = {
@@ -63,6 +62,14 @@ const translations = {
     finishPractice: "完成練習",
     dialogueSegments: "段對話",
     
+    // 場景標題
+    scenario1: "場景一：機場",
+    scenario2: "場景二：飛機上",
+    scenario3: "場景三：家里",
+    scenario4: "場景四：商場",
+    scenario5: "場景五：從電影院出來",
+    scenario6: "場景六：機場",
+    
     // 形容詞練習
     selectPracticeMode: "選擇練習模式",
     negativeForm: "否定形練習（くない / でない）",
@@ -93,6 +100,9 @@ const translations = {
     
     // 選擇題
     choiceQuizTitle: "助詞練習題（選擇題）",
+    
+    // 填充題
+    fillBlankQuizTitle: "助詞練習題（填充題）",
     
     // 404頁面
     pageNotFound: "頁面未找到"
@@ -150,6 +160,14 @@ const translations = {
     finishPractice: "Finish Practice",
     dialogueSegments: "dialogue segments",
     
+    // 場景標題
+    scenario1: "Scenario 1: Airport",
+    scenario2: "Scenario 2: On the Plane",
+    scenario3: "Scenario 3: At Home",
+    scenario4: "Scenario 4: Shopping Mall",
+    scenario5: "Scenario 5: Leaving the Cinema",
+    scenario6: "Scenario 6: Airport",
+    
     // 形容詞練習
     selectPracticeMode: "Select Practice Mode",
     negativeForm: "Negative Form Practice (くない / でない)",
@@ -180,6 +198,9 @@ const translations = {
     
     // 選擇題
     choiceQuizTitle: "Particle Practice (Multiple Choice)",
+    
+    // 填充題
+    fillBlankQuizTitle: "Particle Practice (Fill in the Blank)",
     
     // 404頁面
     pageNotFound: "Page Not Found"

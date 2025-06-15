@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plane, Home, ShoppingBag, Camera, Coffee, Globe } from "lucide-react";
@@ -20,7 +21,7 @@ import { Input } from "@/components/ui/input";
 // 情境題型別定義
 type ScenarioQuestion = {
   id: number;
-  title: string;
+  titleKey: string;
   icon: React.ComponentType<{ className?: string }>;
   dialogue: string[];
   answer: string[];
@@ -30,7 +31,7 @@ type ScenarioQuestion = {
 const scenarioQuestions: ScenarioQuestion[] = [
   {
     id: 1,
-    title: "場景一：機場",
+    titleKey: "scenario1",
     icon: Plane,
     dialogue: [
       "A： 對不起。",
@@ -72,7 +73,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
   },
   {
     id: 2,
-    title: "場景二：飛機上",
+    titleKey: "scenario2",
     icon: Plane,
     dialogue: [
       "A：起來啦，陪我說說話把。",
@@ -119,7 +120,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
   },
   {
     id: 3,
-    title: "場景三：家里",
+    titleKey: "scenario3",
     icon: Home,
     dialogue: [
       "A：早上好！你起得可真早！",
@@ -158,7 +159,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
   },
   {
     id: 4,
-    title: "場景四：商場",
+    titleKey: "scenario4",
     icon: ShoppingBag,
     dialogue: [
       "A：早上好！",
@@ -218,7 +219,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
   },
   {
     id: 5,
-    title: "場景五：從電影院出來",
+    titleKey: "scenario5",
     icon: Camera,
     dialogue: [
       "A：好無聊的電影啊。",
@@ -257,7 +258,7 @@ const scenarioQuestions: ScenarioQuestion[] = [
   },
   {
     id: 6,
-    title: "場景六：機場",
+    titleKey: "scenario6",
     icon: Globe,
     dialogue: [
       "A：假期過得好快啊。",
@@ -345,7 +346,7 @@ const ScenarioQuiz: React.FC = () => {
 
         if (normalize(userAnswer) !== normalize(correctAnswer)) {
           incorrects.push({
-            scenarioTitle: question.title,
+            scenarioTitle: t(question.titleKey),
             dialogueLine: dialogueLine,
             userAnswer: userAnswer,
             correctAnswer: correctAnswer,
@@ -422,7 +423,7 @@ const ScenarioQuiz: React.FC = () => {
                   <div key={scenario.id} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="flex items-center mb-2">
                       <IconComponent className="h-5 w-5 mr-2" />
-                      <span className="font-medium">{scenario.title}</span>
+                      <span className="font-medium">{t(scenario.titleKey)}</span>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       {scenario.dialogue.length} {t('dialogueSegments')}
@@ -468,7 +469,7 @@ const ScenarioQuiz: React.FC = () => {
             <div className="mb-6">
               <div className="flex items-center mb-4">
                 <current.icon className="h-6 w-6 mr-3" />
-                <h2 className="text-xl font-semibold">{current.title}</h2>
+                <h2 className="text-xl font-semibold">{t(current.titleKey)}</h2>
               </div>
               
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-4">
@@ -503,9 +504,9 @@ const ScenarioQuiz: React.FC = () => {
           <div className="flex flex-col items-center text-center">
             <div className="text-2xl font-bold mb-4">{t('scenarioComplete')}</div>
             <div className="text-lg mb-6">
-              <p>{t('scenarioCompleteMessage', { count: randomizedQuestions.length.toString() })}</p>
+              <p>{t('scenarioCompleteMessage', { count: randomizedQuestions.length })}</p>
               {incorrectAnswers.length > 0 ? (
-                <p className="text-destructive mt-2">{t('incorrectAnswersCount', { count: incorrectAnswers.length.toString() })}</p>
+                <p className="text-destructive mt-2">{t('incorrectAnswersCount', { count: incorrectAnswers.length })}</p>
               ) : (
                 <p className="text-green-600 mt-2">{t('allCorrect')}</p>
               )}
@@ -558,7 +559,7 @@ const ScenarioQuiz: React.FC = () => {
                       <div key={scenario.id} className="border rounded-lg p-4">
                         <div className="flex items-center mb-3">
                           <scenario.icon className="h-5 w-5 mr-2" />
-                          <h3 className="font-semibold">{scenario.title}</h3>
+                          <h3 className="font-semibold">{t(scenario.titleKey)}</h3>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800 rounded p-4 space-y-2">
                           {scenario.answer.map((line, lineIndex) => (

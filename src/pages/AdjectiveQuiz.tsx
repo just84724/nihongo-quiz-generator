@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -465,9 +464,9 @@ const AdjectiveQuiz: React.FC = () => {
             <DialogTitle>{t('previousAnswersTitle')}</DialogTitle>
             <DialogDescription>
               {t('completedStatus', { 
-                answered: userAnswers.length.toString(), 
-                correct: correctCount.toString(), 
-                incorrect: wrongAnswers.length.toString() 
+                answered: userAnswers.length,
+                correct: correctCount, 
+                incorrect: wrongAnswers.length 
               })}
             </DialogDescription>
           </DialogHeader>
