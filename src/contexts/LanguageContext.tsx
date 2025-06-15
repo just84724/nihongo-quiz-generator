@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Language = 'zh' | 'en';
@@ -116,6 +115,12 @@ const translations = {
     
     // 填充題
     fillBlankQuizTitle: "助詞練習題（填充題）",
+    
+    // 授受動詞練習
+    givingReceivingQuizTitle: "授受動詞文法練習",
+    
+    // 翻譯練習
+    translationQuizTitle: "中文翻譯日文練習",
     
     // 404頁面
     pageNotFound: "頁面未找到"
@@ -310,6 +315,12 @@ const translations = {
     
     // 填充題
     fillBlankQuizTitle: "Particle Practice (Fill in the Blank)",
+    
+    // 授受動詞練習
+    givingReceivingQuizTitle: "Giving & Receiving Verbs Practice",
+    
+    // 翻譯練習
+    translationQuizTitle: "Chinese to Japanese Translation Practice",
     
     // 404頁面
     pageNotFound: "Page Not Found"
