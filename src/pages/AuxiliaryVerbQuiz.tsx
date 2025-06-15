@@ -15,7 +15,7 @@ interface Question {
   category: string;
 }
 
-const questions: Question[] = [
+const allQuestions: Question[] = [
   // てしまう questions
   { id: 1, chinese: "巴士開走了。", japanese: "バスが行って＿＿＿＿＿", answer: "しまった", hint: "表示自己不願意但又不可能挽回之意", category: "てしまう" },
   { id: 2, chinese: "(它)被擦掉了。", japanese: "消して＿＿＿＿＿", answer: "しまった", hint: "表示動作已完全完成", category: "てしまう" },
@@ -61,15 +61,15 @@ const questions: Question[] = [
   { id: 36, chinese: "我去買書後回來。", japanese: "本を買って＿＿＿＿＿。", answer: "くる", hint: "做完動作後回來", category: "てくる" },
   
   // ていく questions
-  { id: 37, chinese: "他回日本去了。", japanese: "あの人は日本へ帰って＿＿＿＿＿ました。", answer: "いき", hint: "由近而遠移動", category: "ていく" },
-  { id: 38, chinese: "要一個人活下去。", japanese: "一人で生きて＿＿＿＿＿ます。", answer: "いき", hint: "持續到未來", category: "ていく" },
-  { id: 39, chinese: "人是會死的。", japanese: "人間は死んで＿＿＿＿＿。", answer: "いく", hint: "向未來的趨勢", category: "ていく" },
-  { id: 40, chinese: "天氣會越來越暖和。", japanese: "天気が温まって＿＿＿＿＿ます。", answer: "いき", hint: "漸漸變化", category: "ていく" },
-  { id: 41, chinese: "(我)結婚以後會繼續工作下去。", japanese: "結婚してからも仕事を続けて＿＿＿＿＿ます。", answer: "いき", hint: "繼續下去", category: "ていく" },
-  { id: 42, chinese: "車子漸漸遠去。", japanese: "車が遠ざかって＿＿＿＿＿った。", answer: "い", hint: "漸漸遠離", category: "ていく" },
-  { id: 43, chinese: "(我)今後會越加用功。", japanese: "今後も頑張って＿＿＿＿＿ます。", answer: "いき", hint: "持續努力", category: "ていく" },
-  { id: 44, chinese: "身體會越來越強健。", japanese: "体が強くなって＿＿＿＿＿。", answer: "いく", hint: "漸漸變強", category: "ていく" },
-  { id: 45, chinese: "我想要繼續學習日文下去。", japanese: "日本語の勉強を続けて＿＿＿＿＿うと思います。", answer: "いこ", hint: "継続の意向", category: "ていく" }
+  { id: 37, chinese: "他回日本去了。", japanese: "あの人は日本へ帰って＿＿＿＿＿ました。", answer: "いき", category: "ていく" },
+  { id: 38, chinese: "要一個人活下去。", japanese: "一人で生きて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 39, chinese: "人是會死的。", japanese: "人間は死んで＿＿＿＿＿。", answer: "いく", category: "ていく" },
+  { id: 40, chinese: "天氣會越來越暖和。", japanese: "天気が温まって＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 41, chinese: "(我)結婚以後會繼續工作下去。", japanese: "結婚してからも仕事を続けて＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 42, chinese: "車子漸漸遠去。", japanese: "車が遠ざかって＿＿＿＿＿った。", answer: "い", category: "ていく" },
+  { id: 43, chinese: "(我)今後會越加用功。", japanese: "今後も頑張って＿＿＿＿＿ます。", answer: "いき", category: "ていく" },
+  { id: 44, chinese: "身體會越來越強健。", japanese: "体が強くなって＿＿＿＿＿。", answer: "いく", category: "ていく" },
+  { id: 45, chinese: "我想要繼續學習日文下去。", japanese: "日本語の勉強を続けて＿＿＿＿＿うと思います。", answer: "いこ", category: "ていく" }
 ];
 
 const AuxiliaryVerbQuiz: React.FC = () => {
@@ -83,7 +83,8 @@ const AuxiliaryVerbQuiz: React.FC = () => {
   const [showHints, setShowHints] = useState<{ [key: number]: boolean }>({});
 
   useEffect(() => {
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    // 隨機抽取20題
+    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 20);
     setShuffledQuestions(shuffled);
   }, []);
 
@@ -110,7 +111,8 @@ const AuxiliaryVerbQuiz: React.FC = () => {
     setIsCompleted(false);
     setShowResults(false);
     setShowHints({});
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    // 重新隨機抽取20題
+    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 20);
     setShuffledQuestions(shuffled);
   };
 
@@ -188,7 +190,7 @@ const AuxiliaryVerbQuiz: React.FC = () => {
                         <div className="text-muted-foreground mb-1">{question.japanese}</div>
                         <div className="text-red-600">{t('yourAnswer')}{userAnswer || t('notFilled')}</div>
                         <div className="text-green-600">{t('correctAnswer')}{question.answer}</div>
-                        {question.hint && (
+                        {question.hint && question.category !== 'ていく' && (
                           <div className="text-blue-600 text-xs mt-1">💡 {question.hint}</div>
                         )}
                       </div>
@@ -250,17 +252,19 @@ const AuxiliaryVerbQuiz: React.FC = () => {
                 placeholder={t('enterAuxiliaryVerb')}
                 className="flex-1"
               />
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => toggleHint(currentQuestion.id)}
-                title="顯示提示"
-              >
-                <HelpCircle className="h-4 w-4" />
-              </Button>
+              {currentQuestion.hint && currentQuestion.category !== 'ていく' && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => toggleHint(currentQuestion.id)}
+                  title="顯示提示"
+                >
+                  <HelpCircle className="h-4 w-4" />
+                </Button>
+              )}
             </div>
 
-            {showHints[currentQuestion.id] && currentQuestion.hint && (
+            {showHints[currentQuestion.id] && currentQuestion.hint && currentQuestion.category !== 'ていく' && (
               <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded border-l-4 border-blue-500">
                 <div className="text-sm text-blue-700 dark:text-blue-300">
                   💡 {currentQuestion.hint}
