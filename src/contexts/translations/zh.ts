@@ -116,6 +116,9 @@ export const zhTranslations: Translations = {
   
   // 404頁面
   pageNotFound: "頁面未找到",
+  
+  // 主頁面
+  readyToStart: "準備開始您的日語學習之旅",
 
   // Giving & Receiving Verbs Practice Questions
   grq1_chinese: "老師教我日語文法",

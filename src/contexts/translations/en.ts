@@ -200,6 +200,9 @@ export const enTranslations: Translations = {
   
   // 404頁面
   pageNotFound: "Page Not Found",
+  
+  // 主頁面
+  readyToStart: "Ready to start your Japanese learning journey",
 
   // Giving & Receiving Verbs Practice Questions
   grq1_chinese: "The teacher teaches me Japanese grammar",
