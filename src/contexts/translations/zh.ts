@@ -66,7 +66,7 @@ export const zhTranslations: Translations = {
   // 場景標題
   scenario1: "場景一：機場",
   scenario2: "場景二：飛機上",
-  scenario3: "場景三：家里",
+  scenario3: "場景三：家裡",
   scenario4: "場景四：商場",
   scenario5: "場景五：從電影院出來",
   scenario6: "場景六：機場",

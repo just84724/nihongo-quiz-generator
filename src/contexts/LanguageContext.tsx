@@ -8,13 +8,24 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('zh');
 
-  const t = createTranslationFunction(language);
+  try {
+    const t = createTranslationFunction(language);
 
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+    return (
+      <LanguageContext.Provider value={{ language, setLanguage, t }}>
+        {children}
+      </LanguageContext.Provider>
+    );
+  } catch (error) {
+    console.error('Error in LanguageProvider:', error);
+    // 提供默認的翻譯函數
+    const defaultT = (key: string) => key;
+    return (
+      <LanguageContext.Provider value={{ language, setLanguage, t: defaultT }}>
+        {children}
+      </LanguageContext.Provider>
+    );
+  }
 };
 
 export const useLanguage = () => {
