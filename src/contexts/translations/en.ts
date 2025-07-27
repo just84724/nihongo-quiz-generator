@@ -2,12 +2,12 @@
 import { Translations } from '../types';
 
 export const enTranslations: Translations = {
-  // 網站標題和描述
+  // Site title and description
   siteTitle: "Japanese Particles & Adjectives Practice Platform",
   siteDescription: "Professional Japanese Learning Tool",
   chooseMode: "Choose Practice Mode",
   
-  // 練習模式
+  // Practice modes
   particleChoice: "Particle Practice (Multiple Choice)",
   particleFillBlank: "Particle Practice (Fill in the Blank)",
   scenarioPractice: "Scenario Practice",
@@ -16,7 +16,7 @@ export const enTranslations: Translations = {
   auxiliaryVerbPractice: "Auxiliary Verb Practice",
   translationPractice: "Chinese to Japanese Translation Practice",
   
-  // 描述文字
+  // Description text
   practiceDescription: "Practice using Japanese particles correctly",
   modeExplanation: "Multiple choice has standard answers, fill-in-the-blank is free practice, scenario practice features dialogue situations",
   adjectiveExplanation: "Adjective conjugation practice helps you learn various forms of i-adjectives and na-adjectives",
@@ -24,11 +24,11 @@ export const enTranslations: Translations = {
   auxiliaryVerbExplanation: "Practice auxiliary verbs: te shimau, te oku, te miru, te kuru, te iku",
   translationExplanation: "Chinese to Japanese translation practice helps you translate Chinese sentences into Japanese",
   
-  // 翻譯練習專用
+  // Translation practice specific
   translateToJapanese: "Please translate the following Chinese into Japanese",
   enterJapaneseTranslation: "Enter Japanese translation",
   
-  // 通用按鈕
+  // Common buttons
   back: "Back",
   exit: "Exit",
   restart: "Restart",
@@ -36,7 +36,7 @@ export const enTranslations: Translations = {
   finish: "Finish",
   viewAnswers: "View Answers",
   
-  // 情境練習
+  // Scenario practice
   scenarioWelcome: "Welcome to Scenario Practice!",
   scenarioDescription: "Here are 6 different Japanese dialogue scenarios for you to practice daily conversation.",
   startPractice: "Start Practice",
@@ -63,7 +63,7 @@ export const enTranslations: Translations = {
   finishPractice: "Finish Practice",
   dialogueSegments: "dialogue segments",
   
-  // 場景標題
+  // Scenario titles
   scenario1: "Scenario 1: Airport",
   scenario2: "Scenario 2: On the Plane", 
   scenario3: "Scenario 3: At Home",
@@ -155,7 +155,7 @@ export const enTranslations: Translations = {
     "B: Sigh, yeah, really looking forward to the next vacation."
   ],
   
-  // 形容詞練習
+  // Adjective practice
   selectPracticeMode: "Select Practice Mode",
   negativeForm: "Negative Form Practice (kunai / de nai)",
   negativePastForm: "Negative Past Form Practice (kunakatta / de nakatta)",
@@ -183,25 +183,25 @@ export const enTranslations: Translations = {
   completedStatus: "Completed {answered} questions, {correct} correct, {incorrect} incorrect",
   close: "Close",
   
-  // 補助動詞練習
+  // Auxiliary verb practice
   enterAuxiliaryVerb: "Enter auxiliary verb",
   
-  // 選擇題
+  // Choice quiz
   choiceQuizTitle: "Particle Practice (Multiple Choice)",
   
-  // 填充題
+  // Fill blank quiz
   fillBlankQuizTitle: "Particle Practice (Fill in the Blank)",
   
-  // 授受動詞練習
+  // Giving & receiving verb practice
   givingReceivingQuizTitle: "Giving & Receiving Verbs Practice",
   
-  // 翻譯練習
+  // Translation practice
   translationQuizTitle: "Chinese to Japanese Translation Practice",
   
-  // 404頁面
+  // 404 page
   pageNotFound: "Page Not Found",
   
-  // 主頁面
+  // Main page
   readyToStart: "Ready to start your Japanese learning journey",
 
   // Giving & Receiving Verbs Practice Questions
